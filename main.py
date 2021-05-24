@@ -2,7 +2,6 @@
 
 #Arguments are sent in through sys, and can be called upon with sys.argv
 import sys
-import array as arr
 import numpy as np
 
 filename = []
