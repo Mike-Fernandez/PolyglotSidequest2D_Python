@@ -28,6 +28,7 @@ class item:
         self.node1 = None
         self.node2 = None
         self.node3 = None
+        self.node4 = None
         self.value = None
 
     def setID(identifier):
@@ -42,6 +43,8 @@ class item:
         node2 = node_2
     def setNode3(node_3):
         node3 = node_3
+    def setNode4(node_4):
+        node4 = node_4
     def setValue(value_to_assign):
         value = value_to_assign
     def getID(self):
@@ -56,6 +59,8 @@ class item:
         node2 = self.node_2
     def getNode3(self):
         node3 = self.node_3
+    def getNode4(self):
+        node4 = self.node_4
     def getValue(self):
         value = self.value_to_assign
 
