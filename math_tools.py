@@ -1,4 +1,13 @@
+def zeroes2(m, rows, columns):
+    for i in range(rows):
+        row = []
+        for j in range(columns):
+            cell = 0
+            row.append(cell)
+        m.append(row)
 
+
+#Returns matrix filled with zeroes
 def zeroes(rows, columns):
     m = []
     for i in range(rows):
@@ -9,40 +18,121 @@ def zeroes(rows, columns):
         m.append(row)
     return m
 
-def printMatrix2(m):
+def vectorZeroes(v, n):
+    for i in range(n):
+        v.append(0)
+
+def copy_matrix(M):
+    rows = len(M)
+    cols = len(M[0])
+    MC = zeroes(rows, cols)
+    for i in range(rows):
+        for j in range(cols):
+            MC[i][j] = M[i][j] 
+
+    return MC
+
+def calculateMember(i, j, r, A, B):
+    member = 0
+    for k in range(r):
+        member += A[i][k]*B[k][j]
+    return member
+
+def productMatrixMatrix(A, B, n, r, m):
+    R = zeroes(n,m)
+
+    for i in range(n):
+        for j in range(m):
+            R[i][j] = calculateMember(i,j,r,A,B)
+    return R
+
+def productMatrixVector(A,v,R):
+    for f in range(len(A)):
+        cell = 0.0
+        for c in range(len(v)):
+            cell+=A[f][c]*v[c]
+        R[f]+= cell
+
+def productRealMatrix(real, M, R):
+    zeroes2(R,len(M), len(M))
+    for i in range(len(M)):
+        for j in range(len(M[0])):
+            R[i][j] = real*M[i][j]
+
+def getMatrixMinor(m,rows,columns):
+    return [row[:columns] + row[columns+1:] for row in (m[:rows]+m[rows+1:])]
+
+def determinant(M):
+    if(len(M) == 1):
+        return M[0][0]
+    else:
+        det = 0.0
+        for i in range(len(M[0])):
+            minor = []
+            minor = copy_matrix(M)
+            minor = getMatrixMinor(minor, 0, i)
+            det += pow(-1,i)*M[0][i]*determinant(minor)
+        return det;
+
+def cofactors(M, cof):
+    n = len(M)
+    zeroes2(cof,n,n)
+    for i in range(n):
+        for j in range(len(M[0])):
+            minor = copy_matrix(M)
+            minor = getMatrixMinor(minor, i, j)
+            cof[i][j] = pow(-1, i+j)*determinant(minor)
+
+
+def printMatrix(m):
     for row in m:
         for cell in row:
             print(cell, end=" ")
         print()
 
+def printVector(v):
+    for i in range(len(v)):
+        print(v[i])
+
 def transpose(M):
-    """
-    Returns a transpose of a matrix.
-        :param M: The matrix to be transposed
- 
-        :return: The transpose of the given matrix
-    """
-    # Section 1: if a 1D array, convert to a 2D array = matrix
- #   if not isinstance(M[0],list):
- #       M = [M]
- 
-    # Section 2: Get dimensions
     rows = len(M)
     cols = len(M[0])
- 
-    # Section 3: MT is zeros matrix with transposed dimensions
     MT = zeroes(cols, rows)
- 
-    # Section 4: Copy values from M to it's transpose MT
     for i in range(rows):
         for j in range(cols):
             MT[j][i] = M[i][j]
  
     return MT
 
+def inverseMatrix(M, Minv):
+    cof = []
+    adj = []
+    det = determinant(M)
+    if(det == 0):
+        print("ERROR")
+        return
+    cofactors(M,cof)
+    adj = transpose(cof)
+    productRealMatrix(1/det,adj,Minv)
+
 matrix = zeroes(3, 3)
 matrix[2][1] = 1
-printMatrix2(matrix)
+matrix[1][1] = 5
+matrix[0][2] = 2
+matrix[2][0] = 7
+printMatrix(matrix)
 print("break")
-mat2 = transpose(matrix)
-printMatrix2(mat2)
+#det = determinant(matrix)
+multiplied = [2,5,8]
+resp = []
+cof = []
+Minv = []
+inverseMatrix(matrix, Minv)
+#vectorZeroes(resp, 3)
+#cofactors(matrix, cof)
+#print(len(multiplied))
+#productMatrixVector(matrix, multiplied, resp)
+#Minor = getMatrixMinor(matrix,1,0)
+printMatrix(Minv)
+#printVector(resp)
+#print(det)
