@@ -8,8 +8,8 @@ class lines(Enum):
 class modes(Enum):
     NOMODE = auto()
     INT_FLOAT = auto()
-    INT_FLOAT_FLOAT = auto()
-    INT_INT_INT_INT = auto()
+    INT_FLOAT_FLOAT_FLOAT = auto()
+    INT_INT_INT_INT_INT = auto()
 class parameters(Enum):
     THERMAL_CONDUCTIVITY = auto()
     HEAT_SOURCE = auto()
