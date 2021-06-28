@@ -1,23 +1,27 @@
-from enum import Enum,auto
-class indicators(Enum):
-    NOTHING = auto()
-class lines(Enum):
-    NOLINE = auto()
-    SINGLELINE = auto()
-    DOUBLELINE = auto()
-class modes(Enum):
-    NOMODE = auto()
-    INT_FLOAT = auto()
-    INT_FLOAT_FLOAT_FLOAT = auto()
-    INT_INT_INT_INT_INT = auto()
-class parameters(Enum):
-    THERMAL_CONDUCTIVITY = auto()
-    HEAT_SOURCE = auto()
-class sizes(Enum):
-    NODES = auto()
-    ELEMENTS = auto()
-    DIRICHLET = auto()
-    NEUMANN = auto()
+indicators = {
+    "NOTHING": 0
+}
+lines = {
+    "NOLINE": 0,
+    "SINGLELINE": 1,
+    "DOUBLELINE": 2
+}
+modes = {
+    "NOMODE": 0,
+    "INT_FLOAT" : 1,
+    "INT_FLOAT_FLOAT_FLOAT" : 2,
+    "INT_INT_INT_INT_INT" : 3
+}
+parameters = {
+    "THERMAL_CONDUCTIVITY": 0,
+    "HEAT_SOURCE" : 1
+}
+sizes ={
+    "NODES" : 0,
+    "ELEMENTS" : 1,
+    "DIRICHLET" : 2,
+    "NEUMANN" : 3
+}
 
 class item:
     def __init__(self):
@@ -32,32 +36,32 @@ class item:
         self.node4 = None
         self.value = None
 
-    def setID(identifier):
-        id = identifier
+    def setID(self, identifier):
+        self.id = identifier
 
-    def setX(x_coord):
-        x = x_coord
+    def setX(self, x_coord):
+        self.x = x_coord
 
-    def setY(y_coord):
-        y = y_coord
+    def setY(self, y_coord):
+        self.y = y_coord
     
-    def setZ(z_coord):
-        z = z_coord
+    def setZ(self, z_coord):
+        self.z = z_coord
 
-    def setNode1(node_1):
-        node1 = node_1
+    def setNode1(self, node_1):
+        self.node1 = node_1
 
-    def setNode2(node_2):
-        node2 = node_2
+    def setNode2(self, node_2):
+        self.node2 = node_2
 
-    def setNode3(node_3):
-        node3 = node_3
+    def setNode3(self, node_3):
+        self.node3 = node_3
 
-    def setNode4(node_4):
-        node4 = node_4
+    def setNode4(self, node_4):
+        self.node4 = node_4
 
-    def setValue(value_to_assign):
-        value = value_to_assign
+    def setValue(self, value_to_assign):
+        self.value = value_to_assign
 
     def getID(self):
         return self.id
@@ -75,16 +79,16 @@ class item:
         return self.node1
 
     def getNode2(self):
-        node2 = self.node_2
+        return self.node_2
 
     def getNode3(self):
-        node3 = self.node_3
+        return self.node_3
 
     def getNode4(self):
-        node4 = self.node_4
+        return self.node_4
 
     def getValue(self):
-        value = self.value_to_assign
+        return self.value
 
     def setValues(a,b,c,d,e,f,g, h, i):
         None
@@ -112,23 +116,23 @@ class condition(item):
 
 class mesh:
     def __init__(self):
-        self.parameters = [2]
-        self.sizes = [4]
-        self.node_list = [float]
-        self.element_list = [float]
-        self.indices_dirich = [float]
-        self.dirichlet_list = [float]
-        self.neumann_list = [float]
+        self.parameters = [None for n in range(2)]
+        self.sizes = [None for n in range(4)]
+        self.node_list = []
+        self.element_list = []
+        self.indices_dirich = []
+        self.dirichlet_list = []
+        self.neumann_list = []
 
     def setParameters(self,k,Q):
-        self.parameters[parameters.THERMAL_CONDUCTIVITY] = k
-        self.parameters[parameters.HEAT_SOURCE] = Q
+        self.parameters[parameters["THERMAL_CONDUCTIVITY"]] = k
+        self.parameters[parameters["HEAT_SOURCE"]] = Q
 
     def setSizes(self,nnodes,neltos,ndirich,nneu):
-        self.sizes[sizes.NODES] = nnodes
-        self.sizes[sizes.ELEMENTS] = neltos
-        self.sizes[sizes.DIRICHLET] = ndirich        
-        self.sizes[sizes.NEUMANN] = nneu
+        self.sizes[sizes["NODES"]] = nnodes
+        self.sizes[sizes["ELEMENTS"]] = neltos
+        self.sizes[sizes["DIRICHLET"]] = ndirich        
+        self.sizes[sizes["NEUMANN"]] = nneu
 
     def getSize(self,s):
         return self.sizes[s]
@@ -137,11 +141,14 @@ class mesh:
         return self.parameters[p]
 
     def createData(self):
-        self.node_list = [self.sizes[sizes.NODES]]
-        self.element_list = [self.sizes[sizes.ELEMENTS]]
-        self.indices_dirich = [self.sizes[sizes.DIRICHLET]]
-        self.dirichlet_list = [self.sizes[sizes.DIRICHLET]]
-        self.neumann_list = [self.sizes[sizes.NEUMANN]]
+        for n in range(self.sizes[sizes["NODES"]]):
+            self.node_list.append(node)
+#        self.node_list = [node for n in range(self.sizes[sizes["NODES"]])]
+                    #d = [ [ None for y in range( 2 ) ] for x in range( 2 ) ]
+        self.element_list = [element for n in range(self.sizes[sizes["ELEMENTS"]])]
+        self.indices_dirich = [int for n in range(self.sizes[sizes["DIRICHLET"]])]
+        self.dirichlet_list = [condition for n in range(self.sizes[sizes["DIRICHLET"]])]
+        self.neumann_list = [condition for n in range(self.sizes[sizes["NEUMANN"]])] 
 
     def getNodes(self):
         return self.node_list
@@ -165,7 +172,7 @@ class mesh:
         return self.element_list[i]
 
     def getCondition(self,i,type):
-        if(type == sizes.DIRICHLET):
+        if(type == sizes["DIRICHLET"]):
             return self.direchlet_list[i]
         else:
             return self.neumann_list[i]
