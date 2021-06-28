@@ -142,13 +142,26 @@ class mesh:
 
     def createData(self):
         for n in range(self.sizes[sizes["NODES"]]):
-            self.node_list.append(node)
+            new_node = node()
+            self.node_list.append(new_node)
 #        self.node_list = [node for n in range(self.sizes[sizes["NODES"]])]
                     #d = [ [ None for y in range( 2 ) ] for x in range( 2 ) ]
-        self.element_list = [element for n in range(self.sizes[sizes["ELEMENTS"]])]
-        self.indices_dirich = [int for n in range(self.sizes[sizes["DIRICHLET"]])]
-        self.dirichlet_list = [condition for n in range(self.sizes[sizes["DIRICHLET"]])]
-        self.neumann_list = [condition for n in range(self.sizes[sizes["NEUMANN"]])] 
+        for n in range(self.sizes[sizes["ELEMENTS"]]):
+            new_element = element()
+            self.element_list.append(new_element)
+#        self.element_list = [element for n in range(self.sizes[sizes["ELEMENTS"]])]
+        for n in range(self.sizes[sizes["DIRICHLET"]]):
+            new_indice = int()
+            self.indices_dirich.append(new_indice)
+#        self.indices_dirich = [int for n in range(self.sizes[sizes["DIRICHLET"]])]
+        for n in range(self.sizes[sizes["DIRICHLET"]]):
+            new_dirich = condition()
+            self.dirichlet_list.append(new_dirich)
+#        self.dirichlet_list = [condition for n in range(self.sizes[sizes["DIRICHLET"]])]
+        for n in range(self.sizes[sizes["NEUMANN"]]):
+            new_nuemann = condition()
+            self.neumann_list.append(new_nuemann)
+#        self.neumann_list = [condition for n in range(self.sizes[sizes["NEUMANN"]])] 
 
     def getNodes(self):
         return self.node_list
