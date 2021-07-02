@@ -1,6 +1,7 @@
 #This is the main file for the program
 import classes
 import math_tools
+import sel
 #Arguments are sent in through sys, and can be called upon with sys.argv
 import sys
 
@@ -16,7 +17,3 @@ b = []
 T= []
 
 m = classes.mesh()
-
-
-
-

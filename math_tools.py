@@ -1,3 +1,5 @@
+import sel
+
 def zeroes2(m, rows, columns):
     for i in range(rows):
         row = []
@@ -84,11 +86,7 @@ def cofactors(M, cof):
             cof[i][j] = pow(-1, i+j)*determinant(minor)
 
 
-def printMatrix(m):
-    for row in m:
-        for cell in row:
-            print(cell, end=" ")
-        print()
+
 
 def printVector(v):
     for i in range(len(v)):
@@ -120,8 +118,9 @@ matrix[2][1] = 1
 matrix[1][1] = 5
 matrix[0][2] = 2
 matrix[2][0] = 7
-printMatrix(matrix)
+sel.showMatrix(matrix)
 print("break")
+
 #det = determinant(matrix)
 multiplied = [2,5,8]
 resp = []
@@ -133,6 +132,6 @@ inverseMatrix(matrix, Minv)
 #print(len(multiplied))
 #productMatrixVector(matrix, multiplied, resp)
 #Minor = getMatrixMinor(matrix,1,0)
-printMatrix(Minv)
+sel.showMatrix(Minv)
 #printVector(resp)
 #print(det)
