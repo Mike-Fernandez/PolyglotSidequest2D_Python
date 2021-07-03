@@ -79,13 +79,13 @@ class item:
         return self.node1
 
     def getNode2(self):
-        return self.node_2
+        return self.node2
 
     def getNode3(self):
-        return self.node_3
+        return self.node3
 
     def getNode4(self):
-        return self.node_4
+        return self.node4
 
     def getValue(self):
         return self.value

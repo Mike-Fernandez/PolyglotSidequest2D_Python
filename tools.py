@@ -50,17 +50,20 @@ def obtenerDatos(file, nlines, n, mode, item_list):
         line = file.readline()
     for i in range(n):
         switch[mode](file, item_list, i)
-        print("Printing itemList from obtenerDatos "+ str(item_list[i].getX()) + " " + str(item_list[i].getY()) + " " + str(item_list[i].getZ()))
+#        print("Printing itemList from obtenerDatos "+ str(item_list[i].getX()) + " " + str(item_list[i].getY()) + " " + str(item_list[i].getZ()))
 
 def correctConditions(n, list, indices):
     for i in range(n):
         indices[i] = list[i].getNode1()
+        print("INDICES" + str(indices[i]))
     
     for i in range(n-1):
         pivot = list[i].getNode1()
+        print("Pivot"+ str(pivot))
         for j in range(i, n):
-            if(list[j].getNode1() > pivot):
-                list[j].setNode1(list[j].getNode1()-1)
+            pos = list[j].getNode1()
+            if(pos > pivot):
+                list[j].setNode1(pos-1)
 
 def addExtension(newFileName, filename, extension):
     tupla = (filename, extension)
@@ -144,7 +147,25 @@ leerMallayCondiciones(m, "3dtest")
 #m.node_list[0].setX(9)
 #print(m.node_list[0].getX())
 #print(m.getNode(0).getX())
-for i in range(m.getSize(classes.sizes["NODES"])):
-    print(str(m.getNodes()[i].getX())+" "+str(m.getNodes()[i].getY())+" "+str(m.getNodes()[i].getZ()))
+
+#print("NODES")
+#for i in range(m.getSize(classes.sizes["NODES"])):
+#    print(str(m.getNodes()[i].getX())+" "+str(m.getNodes()[i].getY())+" "+str(m.getNodes()[i].getZ()))
+#print("ELEMENTS")
+#for i in range(m.getSize(classes.sizes["ELEMENTS"])):
+#    print(str(m.getElements()[i].getNode1())+" "+str(m.getElements()[i].getNode2())+" "+str(m.getElements()[i].getNode3())+" "+str(m.getElements()[i].getNode4()))
+#print("NEUMANN")
+#for i in range(m.getSize(classes.sizes["NEUMANN"])):
+#    print(str(m.getNeumann()[i].getNode1())+" "+str(m.getNeumann()[i].getValue()))
+#print("DIRICHLET INDICES")
+#for i in range(m.getSize(classes.sizes["DIRICHLET"])):
+#    print(str(m.getDirichletIndices()[i]))
+print("DIRICHLET")
+for i in range(m.getSize(classes.sizes["DIRICHLET"])):
+    print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
+m.getDirichlet()[0].setNode1(4)
+print("DIRICHLET")
+for i in range(m.getSize(classes.sizes["DIRICHLET"])):
+    print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
 
 #obtenerDatos("3dtest.dat", 0, 0, 0, 0)
