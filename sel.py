@@ -295,12 +295,15 @@ def localMiu(i, mesh, miu):
     miu[9][8] = J
     miu[9][9] = C
 
-def createLocalK(element, mesh):
+def createLocalK(element, mesh, miu, K):
     cero = math_tools.zeroes(10,10)
-    miu = []
-    localMiu(element,mesh,miu)
+#    miu = []
+#    localMiu(element,mesh,miu)
+    K = []
+    for n in range(3):
+        row = []
+        K.append(row)
 
-    K = [[]]
     K[0][0] = miu
     K[1][1] = miu
     K[2][2] = miu
@@ -360,8 +363,62 @@ def calculate(K,b,T):
     math_tools.productMatrixVector(Kinv,b,T)
 
 
-m = classes.mesh()
+#m = classes.mesh()
 miu = math_tools.zeroes(10,10)
 
+miu[0][0] = 'A'
+miu[0][1] = 'E'
+miu[0][4] = '-F'
+miu[0][6] = '-F'
+miu[0][7] = 'G'
+miu[0][8] = 'F'
+miu[0][9] = 'F'
+miu[1][0] = 'E'
+miu[1][1] = 'B'
+miu[1][4] = '-H'
+miu[1][6] = '-H'
+miu[1][7] = 'I'
+miu[1][8] = 'H'
+miu[1][9] = 'H'
+miu[4][0] = '-F'
+miu[4][1] = '-H'
+miu[4][4] = 'C'
+miu[4][6] = 'J'
+miu[4][7] = '-K'
+miu[4][8] = '-C'
+miu[4][9] = '-J'
+miu[6][0] = '-F'
+miu[6][1] = '-H'
+miu[6][4] = 'J'
+miu[6][6] = 'C'
+miu[6][7] = '-K'
+miu[6][8] = '-J'
+miu[6][9] = '-C'
+miu[7][0] = 'G'
+miu[7][1] = 'I'
+miu[7][4] = '-K'
+miu[7][6] = '-K'
+miu[7][7] = 'D'
+miu[7][8] = 'K'
+miu[7][9] = 'K'
+miu[8][0] = 'F'
+miu[8][1] = 'H'
+miu[8][4] = '-C'
+miu[8][6] = '-J'
+miu[8][7] = 'K'
+miu[8][8] = 'C'
+miu[8][9] = 'J'
+miu[9][0] = 'F'
+miu[9][1] = 'H'
+miu[9][4] = '-J'
+miu[9][6] = '-C'
+miu[9][7] = 'K'
+miu[9][8] = 'J'
+miu[9][9] = 'C'
 
-showMatrix(miu)
+print('A')
+K = math_tools.zeroes(3,3)
+K2 = math_tools.zeroes(3,3)
+#createLocalK(0,0,miu,K)
+
+showMatrix(K)
