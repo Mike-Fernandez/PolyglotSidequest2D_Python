@@ -1,4 +1,5 @@
 from enum import Enum
+from math_tools import vectorZeroes, zeroes
 import classes
 
 def INT_FLOAT(file, item_list, i):
@@ -82,7 +83,7 @@ def correctConditions(n, list, indices):
             if(pos > pivot):
                 list[j].setNode1(pos-1)
 
-def addExtension(newFileName, filename, extension):
+def addExtension(filename, extension):
     tupla = (filename, extension)
     newFileName = "".join(tupla)
     return newFileName
@@ -95,7 +96,7 @@ def leerMallayCondiciones(m, filename):
     nEltos=0 
     nDirich=0 
     nNeu = 0
-    inputFileName = addExtension(inputFileName, filename, ".dat")
+    inputFileName = addExtension(filename, ".dat")
     file = open(inputFileName, "r")
     line  = [float(x) for x in file.readline().split()]
     k = line[0]
@@ -117,7 +118,7 @@ def leerMallayCondiciones(m, filename):
     item_list = m.node_list
     for i in range(10):
         print("Printing itemList from leerMalla "+ str(item_list[i].getX()) + " " + str(item_list[i].getY()) + " " + str(item_list[i].getZ()))
-    obtenerDatos(file, classes.lines["DOUBLELINE"], nEltos, classes.modes["INT10"], m.getElements())
+    obtenerDatos(file, classes.lines["DOUBLELINE"], nEltos, classes.modes["INT_INT_INT_INT_INT"], m.getElements())
     file.readline()
     obtenerDatos(file, classes.lines["DOUBLELINE"], nDirich, classes.modes["INT_FLOAT"], m.getDirichlet())
     file.readline()
@@ -137,30 +138,33 @@ def writeResults(m, T, filename):
     dirichIndices = m.getDirichletIndices()
     dirich = m.getDirichlet()
 
-    addExtension(outputFilename, filename, ".post.res")
+    outputFilename = addExtension( filename, ".post.res")
+    print(outputFilename)
     file = open(outputFilename, "w")
 
     file.write("GiD Post Results File 1.0\n")
     file.write("Result \"Temperature\" \"Load Case 1\" 1 Scalar OnNodes\nComponentNames \"T\"\nValues\n")
 
-    Tpos, Dpos = 0
+    Tpos = 0
+    Dpos = 0
     n = m.getSize(classes.sizes["NODES"])
     nd = m.getSize(classes.sizes["DIRICHLET"])
     for i in range(n):
         if(findIndex(i+1, nd, dirichIndices)):
-            string = str(i+1) + " " + dirich[Dpos].getValue() + "\n"
+            string = str(i+1) + " " + str(dirich[Dpos].getValue()) + "\n"
             file.write(string)
             Dpos+= 1
         else:
-            string2 = str(i+1) + " " + T[Tpos] + "\n"
+            string2 = str(i+1) + " " + str(T[Tpos]) + "\n"
             file.write(string2)
             Tpos+= 1
     
     file.write("End values\n")
     file.close()
 
-m = classes.mesh()
-leerMallayCondiciones(m, "3dtest")
+#m = classes.mesh()
+#leerMallayCondiciones(m, "3dtest")
+
 #m.node_list[0].setX(9)
 #print(m.node_list[0].getX())
 #print(m.getNode(0).getX())
@@ -177,12 +181,15 @@ leerMallayCondiciones(m, "3dtest")
 #print("DIRICHLET INDICES")
 #for i in range(m.getSize(classes.sizes["DIRICHLET"])):
 #    print(str(m.getDirichletIndices()[i]))
-print("DIRICHLET")
-for i in range(m.getSize(classes.sizes["DIRICHLET"])):
-    print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
-m.getDirichlet()[0].setNode1(4)
-print("DIRICHLET")
-for i in range(m.getSize(classes.sizes["DIRICHLET"])):
-    print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
+# print("DIRICHLET")
+# for i in range(m.getSize(classes.sizes["DIRICHLET"])):
+#     print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
+# m.getDirichlet()[0].setNode1(4)
+# print("DIRICHLET")
+# for i in range(m.getSize(classes.sizes["DIRICHLET"])):
+#     print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
 
 #obtenerDatos("3dtest.dat", 0, 0, 0, 0)
+#T = []
+#vectorZeroes(T,30)
+#writeResults(m,T,"3dtest")
