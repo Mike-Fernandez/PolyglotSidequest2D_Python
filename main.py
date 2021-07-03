@@ -14,7 +14,24 @@ filename.append(sys.argv[2])
 localKs = []
 localBs = []
 K = []
-b = []
+B = []
 T= []
 
 m = classes.mesh()
+
+tools.leerMallayCondiciones(m,filename)
+
+sel.crearSistemasLocales(m, localKs, localBs)
+
+K = math_tools.zeroes(m.getSize(classes.sizes["NODES"]), m.getSize(classes.sizes["NODES"]))
+math_tools.vectorZeroes(B, m.getSize(classes.sizes["NODES"]))
+
+sel.assembly(m, localKs, localBs, K, B)
+
+sel.applyNeumann(m, B)
+sel.applyDirichlet(m, K, B)
+
+math_tools.vectorZeroes(T, len(B))
+sel.calculate(K,B,T)
+tools.writeResults(m, T, filename)
+

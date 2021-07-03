@@ -295,7 +295,7 @@ def localMiu(i, mesh, miu):
     miu[9][8] = J
     miu[9][9] = C
 
-def createLocalK(element, mesh, miu):
+def createLocalK(element, mesh):
     J = calculateJacobiano(element, mesh)
     Ei = 166
     miu = []
@@ -392,6 +392,180 @@ def calculateJacobiano(ind,mesh):
 
     return J
 
+def crearSistemasLocales(mesh, localKs, localbs):
+    for i in range(mesh.getSize(classes.sizes["ELEMENTS"])):
+        localKs.append(createLocalK(i,mesh))
+        localbs.append(createLocalB(i,mesh))
+
+def assemblyK(element, localK, K):
+    index1 = element.getNode1()-1
+    index2 = element.getNode2()-1
+    index3 = element.getNode3()-1
+    index4 = element.getNode4()-1
+    index5 = element.getNode5()-1
+    index6 = element.getNode6()-1
+    index7 = element.getNode7()-1
+    index8 = element.getNode8()-1
+    index9 = element.getNode9()-1
+    index10 = element.getNode10()-1
+
+    K[index1][index1] += localK[0][0]
+    K[index1][index2] += localK[0][1]
+    K[index1][index3] += localK[0][2]
+    K[index1][index4] += localK[0][3]
+    K[index1][index5] += localK[0][4]
+    K[index1][index6] += localK[0][5]
+    K[index1][index7] += localK[0][6]
+    K[index1][index8] += localK[0][7]
+    K[index1][index9] += localK[0][8]
+    K[index1][index10] += localK[0][9]
+
+    K[index2][index1] += localK[1][0]
+    K[index2][index2] += localK[1][1]
+    K[index2][index3] += localK[1][2]
+    K[index2][index4] += localK[1][3]
+    K[index2][index5] += localK[1][4]
+    K[index2][index6] += localK[1][5]
+    K[index2][index7] += localK[1][6]
+    K[index2][index8] += localK[1][7]
+    K[index2][index9] += localK[1][8]
+    K[index2][index10] += localK[1][9]
+
+    K[index3][index1] += localK[2][0]
+    K[index3][index2] += localK[2][1]
+    K[index3][index3] += localK[2][2]
+    K[index3][index4] += localK[2][3]
+    K[index3][index5] += localK[2][4]
+    K[index3][index6] += localK[2][5]
+    K[index3][index7] += localK[2][6]
+    K[index3][index8] += localK[2][7]
+    K[index3][index9] += localK[2][8]
+    K[index3][index10] += localK[2][9]
+
+    K[index4][index1] += localK[3][0]
+    K[index4][index2] += localK[3][1]
+    K[index4][index3] += localK[3][2]
+    K[index4][index4] += localK[3][3]
+    K[index4][index5] += localK[3][4]
+    K[index4][index6] += localK[3][5]
+    K[index4][index7] += localK[3][6]
+    K[index4][index8] += localK[3][7]
+    K[index4][index9] += localK[3][8]
+    K[index4][index10] += localK[3][9]
+
+    K[index5][index1] += localK[4][0]
+    K[index5][index2] += localK[4][1]
+    K[index5][index3] += localK[4][2]
+    K[index5][index4] += localK[4][3]
+    K[index5][index5] += localK[4][4]
+    K[index5][index6] += localK[4][5]
+    K[index5][index7] += localK[4][6]
+    K[index5][index8] += localK[4][7]
+    K[index5][index9] += localK[4][8]
+    K[index5][index10] += localK[4][9]
+
+    K[index6][index1] += localK[5][0]
+    K[index6][index2] += localK[5][1]
+    K[index6][index3] += localK[5][2]
+    K[index6][index4] += localK[5][3]
+    K[index6][index5] += localK[5][4]
+    K[index6][index6] += localK[5][5]
+    K[index6][index7] += localK[5][6]
+    K[index6][index8] += localK[5][7]
+    K[index6][index9] += localK[5][8]
+    K[index6][index10] += localK[5][9]
+
+    K[index7][index1] += localK[6][0]
+    K[index7][index2] += localK[6][1]
+    K[index7][index3] += localK[6][2]
+    K[index7][index4] += localK[6][3]
+    K[index7][index5] += localK[6][4]
+    K[index7][index6] += localK[6][5]
+    K[index7][index7] += localK[6][6]
+    K[index7][index8] += localK[6][7]
+    K[index7][index9] += localK[6][8]
+    K[index7][index10] += localK[6][9]
+
+    K[index8][index1] += localK[7][0]
+    K[index8][index2] += localK[7][1]
+    K[index8][index3] += localK[7][2]
+    K[index8][index4] += localK[7][3]
+    K[index8][index5] += localK[7][4]
+    K[index8][index6] += localK[7][5]
+    K[index8][index7] += localK[7][6]
+    K[index8][index8] += localK[7][7]
+    K[index8][index9] += localK[7][8]
+    K[index8][index10] += localK[7][9]
+
+    K[index9][index1] += localK[8][0]
+    K[index9][index2] += localK[8][1]
+    K[index9][index3] += localK[8][2]
+    K[index9][index4] += localK[8][3]
+    K[index9][index5] += localK[8][4]
+    K[index9][index6] += localK[8][5]
+    K[index9][index7] += localK[8][6]
+    K[index9][index8] += localK[8][7]
+    K[index9][index9] += localK[8][8]
+    K[index9][index10] += localK[8][9]
+
+    K[index10][index1] += localK[9][0]
+    K[index10][index2] += localK[9][1]
+    K[index10][index3] += localK[9][2]
+    K[index10][index4] += localK[9][3]
+    K[index10][index5] += localK[9][4]
+    K[index10][index6] += localK[9][5]
+    K[index10][index7] += localK[9][6]
+    K[index10][index8] += localK[9][7]
+    K[index10][index9] += localK[9][8]
+    K[index10][index10] += localK[9][9]
+
+def assemblyb(element, localb, b):
+    index1 = element.getNode1()-1
+    index2 = element.getNode2()-1
+    index3 = element.getNode3()-1
+    index4 = element.getNode4()-1
+    index5 = element.getNode5()-1
+    index6 = element.getNode6()-1
+    index7 = element.getNode7()-1
+    index8 = element.getNode8()-1
+    index9 = element.getNode9()-1
+    index10 = element.getNode10()-1
+
+    b[index1] += localb[0]
+    b[index2] += localb[1]
+    b[index3] += localb[2]
+    b[index4] += localb[3]
+    b[index5] += localb[4]
+    b[index6] += localb[5]
+    b[index7] += localb[6]
+    b[index8] += localb[7]
+    b[index9] += localb[8]
+    b[index10] += localb[9]
+
+def assembly(mesh, localKs, localBs, K, B):
+    for i in range(mesh.sizes[classes.sizes["ELEMENTS"]]):
+        element = mesh.getElement(i)
+        assemblyK(element, localKs[i],K)
+        assemblyb(element, localBs[i],B)
+
+def applyNeumann(mesh, b):
+    for i in range(mesh.sizes[classes.sizes["NEUMANN"]]):
+        c = mesh.getCondition(i,classes.sizes["NEUMANN"])
+        b[c.getNode1()-1] += c.getValue()
+
+def applyDirichlet(mesh, K, b):
+    for i in range(mesh.sizes[classes.sizes["DIRICHLET"]]):
+        c = mesh.getCondition(i,classes.sizes["DIRICHLET"])
+        index = c.getNode1()-1
+        temp = []
+        temp = K.pop(index)
+        temp = b.pop(index)
+
+        for row in range(len(K)):
+            cell = K[row][index]
+            K[row].pop(index)
+            b[row] += -1*c.getValues*cell
+
 def calculate(K,b,T):
     print("Iniciando calculo de respuesta...\n")
     Kinv = []
@@ -402,74 +576,74 @@ def calculate(K,b,T):
 
 
 #m = classes.mesh()
-miu = math_tools.zeroes(10,10)
-
-miu[0][0] = 'A'
-miu[0][1] = 'E'
-miu[0][4] = '-F'
-miu[0][6] = '-F'
-miu[0][7] = 'G'
-miu[0][8] = 'F'
-miu[0][9] = 'F'
-miu[1][0] = 'E'
-miu[1][1] = 'B'
-miu[1][4] = '-H'
-miu[1][6] = '-H'
-miu[1][7] = 'I'
-miu[1][8] = 'H'
-miu[1][9] = 'H'
-miu[4][0] = '-F'
-miu[4][1] = '-H'
-miu[4][4] = 'C'
-miu[4][6] = 'J'
-miu[4][7] = '-K'
-miu[4][8] = '-C'
-miu[4][9] = '-J'
-miu[6][0] = '-F'
-miu[6][1] = '-H'
-miu[6][4] = 'J'
-miu[6][6] = 'C'
-miu[6][7] = '-K'
-miu[6][8] = '-J'
-miu[6][9] = '-C'
-miu[7][0] = 'G'
-miu[7][1] = 'I'
-miu[7][4] = '-K'
-miu[7][6] = '-K'
-miu[7][7] = 'D'
-miu[7][8] = 'K'
-miu[7][9] = 'K'
-miu[8][0] = 'F'
-miu[8][1] = 'H'
-miu[8][4] = '-C'
-miu[8][6] = '-J'
-miu[8][7] = 'K'
-miu[8][8] = 'C'
-miu[8][9] = 'J'
-miu[9][0] = 'F'
-miu[9][1] = 'H'
-miu[9][4] = '-J'
-miu[9][6] = '-C'
-miu[9][7] = 'K'
-miu[9][8] = 'J'
-miu[9][9] = 'C'
-
-K = math_tools.zeroes(30,30)
-#for t in range(0,30,10):
-#    for i in range(10):
-#        for j in range(10):
-#            K[i+t][j+t] = miu[i][j]
-
-h = 0
-for i in range(10):
-    for j in range(10):
-        K[i+h][j+h] = miu[i][j]
-h = 10
-for i in range(10):
-    for j in range(10):
-        K[i+h][j+h] = miu[i][j]
-h = 20
-for i in range(10):
-    for j in range(10):
-        K[i+h][j+h] = miu[i][j]
-showMatrix(K)
+#miu = math_tools.zeroes(10,10)
+#
+#miu[0][0] = 'A'
+#miu[0][1] = 'E'
+#miu[0][4] = '-F'
+#miu[0][6] = '-F'
+#miu[0][7] = 'G'
+#miu[0][8] = 'F'
+#miu[0][9] = 'F'
+#miu[1][0] = 'E'
+#miu[1][1] = 'B'
+#miu[1][4] = '-H'
+#miu[1][6] = '-H'
+#miu[1][7] = 'I'
+#miu[1][8] = 'H'
+#miu[1][9] = 'H'
+#miu[4][0] = '-F'
+#miu[4][1] = '-H'
+#miu[4][4] = 'C'
+#miu[4][6] = 'J'
+#miu[4][7] = '-K'
+#miu[4][8] = '-C'
+#miu[4][9] = '-J'
+#miu[6][0] = '-F'
+#miu[6][1] = '-H'
+#miu[6][4] = 'J'
+#miu[6][6] = 'C'
+#miu[6][7] = '-K'
+#miu[6][8] = '-J'
+#miu[6][9] = '-C'
+#miu[7][0] = 'G'
+#miu[7][1] = 'I'
+#miu[7][4] = '-K'
+#miu[7][6] = '-K'
+#miu[7][7] = 'D'
+#miu[7][8] = 'K'
+#miu[7][9] = 'K'
+#miu[8][0] = 'F'
+#miu[8][1] = 'H'
+#miu[8][4] = '-C'
+#miu[8][6] = '-J'
+#miu[8][7] = 'K'
+#miu[8][8] = 'C'
+#miu[8][9] = 'J'
+#miu[9][0] = 'F'
+#miu[9][1] = 'H'
+#miu[9][4] = '-J'
+#miu[9][6] = '-C'
+#miu[9][7] = 'K'
+#miu[9][8] = 'J'
+#miu[9][9] = 'C'
+#
+#K = math_tools.zeroes(30,30)
+##for t in range(0,30,10):
+##    for i in range(10):
+##        for j in range(10):
+##            K[i+t][j+t] = miu[i][j]
+#
+#h = 0
+#for i in range(10):
+#    for j in range(10):
+#        K[i+h][j+h] = miu[i][j]
+#h = 10
+#for i in range(10):
+#    for j in range(10):
+#        K[i+h][j+h] = miu[i][j]
+#h = 20
+#for i in range(10):
+#    for j in range(10):
+#        K[i+h][j+h] = miu[i][j]
+#showMatrix(K)

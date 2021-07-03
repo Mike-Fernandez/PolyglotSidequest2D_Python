@@ -1,5 +1,11 @@
 #import sel
 
+#def showMatrix(m):
+#    for row in m:
+#        for cell in row:
+#            print(cell, end="  ")
+#        print()
+
 def zeroes2(m, rows, columns):
     for i in range(rows):
         row = []
@@ -113,20 +119,21 @@ def inverseMatrix(M, Minv):
     adj = transpose(cof)
     productRealMatrix(1/det,adj,Minv)
 
-matrix = zeroes(3, 3)
-matrix[2][1] = 1
-matrix[1][1] = 5
-matrix[0][2] = 2
-matrix[2][0] = 7
-#sel.showMatrix(matrix)
-print("break")
+#def borrarColumna(matrix, column):
+#    for i in range(len(matrix)):
+#        matrix[i].pop(column)
 
+#matrix = zeroes(3, 3)
+#matrix[2][1] = 1
+#matrix[1][1] = 5
+#matrix[0][2] = 2
+#matrix[2][0] = 7
+##showMatrix(matrix)
+#print("hello from math_tools")
+#for i in range(len(matrix)):
+#    matrix[i].pop(0)
+#showMatrix(matrix)
 #det = determinant(matrix)
-multiplied = [2,5,8]
-resp = []
-cof = []
-Minv = []
-inverseMatrix(matrix, Minv)
 #vectorZeroes(resp, 3)
 #cofactors(matrix, cof)
 #print(len(multiplied))
