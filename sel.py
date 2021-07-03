@@ -101,22 +101,23 @@ def calculateLocalVolume(ind, mesh):
 def ab_ij(ai,aj,a1,bi,bj,b1):
     return (ai - a1)*(bj - b1) - (aj - a1)*(bi - b1)
 
-def calculateLocalA(i,matriz,mesh): #matriz a por referencia
+def createLocalc1(x1, x2):
+    return 1/pow(x2-x1,2)
+
+def createLocalc2(x1, x2, x8):
+    return (1/(x2-x1))*(4*x1+4*x2-8*x8)
+
+def calculateA(i,matriz,mesh): #matriz a por referencia
     element = mesh.getElement(i)
     n1 = mesh.getNode(element.getNode1()-1)
     n2 = mesh.getNode(element.getNode2()-1)
-    n3 = mesh.getNode(element.getNode3()-1)
-    n4 = mesh.getNode(element.getNode4()-1)
+    n8 = mesh.getNode(element.getNode8()-1)
+    c1 = createLocalc1(n1.getX(), n2.getX())
+    c2 = createLocalc2(n1.getX(), n2.getX(), n8.getX())
 
-    matriz[0][0] = ab_ij(n3.getY(),n4.getY(),n1.getY(),n3.getZ(),n4.getZ(),n1.getZ())
-    matriz[0][1] = ab_ij(n4.getY(),n2.getY(),n1.getY(),n4.getZ(),n2.getZ(),n1.getZ())
-    matriz[0][2] = ab_ij(n2.getY(),n3.getY(),n1.getY(),n2.getZ(),n3.getZ(),n1.getZ())
-    matriz[1][0] = ab_ij(n4.getX(),n3.getX(),n1.getX(),n4.getZ(),n3.getZ(),n1.getZ())
-    matriz[1][1] = ab_ij(n2.getX(),n4.getX(),n1.getX(),n2.getZ(),n4.getZ(),n1.getZ())
-    matriz[1][2] = ab_ij(n3.getX(),n2.getX(),n1.getX(),n3.getZ(),n2.getZ(),n1.getZ())
-    matriz[2][0] = ab_ij(n3.getX(),n4.getX(),n1.getX(),n3.getY(),n4.getY(),n1.getY())
-    matriz[2][1] = ab_ij(n4.getX(),n2.getX(),n1.getX(),n4.getY(),n2.getY(),n1.getY())
-    matriz[2][2] = ab_ij(n2.getX(),n3.getX(),n1.getX(),n2.getY(),n3.getY(),n1.getY())
+    return (-1/pow(c2,2)*192)*pow(4*c1-c2, 4) - (1/c2*24)*pow(4*c1-c2, 3) - (1/pow(c2,3)*3840)*pow(4*c1-c2, 5) + (1/pow(c2,3)*3840)*pow(4*c1-3*c2, 5)
+
+
 
 def calculateB(matriz):
     matriz[0][0] = -1
@@ -146,7 +147,7 @@ def calculateLocalJ(ind,mesh):
     h=0.0
     i=0.0
 
-    element = mesh.getElement(ind)
+    el = mesh.getElement(ind)
 
     n1 = mesh.getNode(el.getNode1()-1)
     n2 = mesh.getNode(el.getNode2()-1)

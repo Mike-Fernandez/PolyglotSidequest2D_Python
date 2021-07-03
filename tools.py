@@ -7,7 +7,10 @@ def INT_FLOAT(file, item_list, i):
     array  = [float(x) for x in file.readline().split()]
     e0 = int(array[0])
     r0 = array[1]
-    item_list[i].setValues(classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], e0, classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], r0)
+    item_list[i].setValues(classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], 
+        classes.indicators["NOTHING"], e0, classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], 
+        classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], 
+        classes.indicators["NOTHING"], classes.indicators["NOTHING"], r0)
 
 def INT_FLOAT_FLOAT_FLOAT(file, item_list: classes.item, i):
     e = 0
@@ -19,26 +22,40 @@ def INT_FLOAT_FLOAT_FLOAT(file, item_list: classes.item, i):
     r = array[1]
     rr = array[2]
     rrr = array[3]
-    item_list[i].setValues(e, r, rr, rrr, classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"])
+    item_list[i].setValues(e, r, rr, rrr, 
+        classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], 
+        classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], 
+        classes.indicators["NOTHING"], classes.indicators["NOTHING"])
 
-def INT_INT_INT_INT_INT(file, item_list, i):
+def INT10(file, item_list, i):
     e1 = 0
     e2 = 0
     e3 = 0
     e4 = 0
     e5 = 0
+    e6 = 0
+    e7 = 0
+    e8 = 0
+    e9 = 0
+    e10 = 0
     array = [int(x) for x in file.readline().split()]
     e1 = array[0]
     e2 = array[1]
     e3 = array[2]
     e4 = array[3]
     e5 = array[4]
-    item_list[i].setValues(e1, classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], e2, e3, e4, e5, classes.indicators["NOTHING"])
+    e6 = array[5]
+    e7 = array[6]
+    e8 = array[7]
+    e9 = array[8]
+    e10 = array[9]
+    item_list[i].setValues(e1, classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], 
+        e2, e3, e4, e5, e6, e7, e8, e9, e10, classes.indicators["NOTHING"])
 
 switch = {
     classes.modes["INT_FLOAT"]: INT_FLOAT,
     classes.modes["INT_FLOAT_FLOAT_FLOAT"]: INT_FLOAT_FLOAT_FLOAT,
-    classes.modes["INT_INT_INT_INT_INT"]: INT_INT_INT_INT_INT
+    classes.modes["INT10"]: INT10
 }
 
 
@@ -100,7 +117,7 @@ def leerMallayCondiciones(m, filename):
     item_list = m.node_list
     for i in range(10):
         print("Printing itemList from leerMalla "+ str(item_list[i].getX()) + " " + str(item_list[i].getY()) + " " + str(item_list[i].getZ()))
-    obtenerDatos(file, classes.lines["DOUBLELINE"], nEltos, classes.modes["INT_INT_INT_INT_INT"], m.getElements())
+    obtenerDatos(file, classes.lines["DOUBLELINE"], nEltos, classes.modes["INT10"], m.getElements())
     file.readline()
     obtenerDatos(file, classes.lines["DOUBLELINE"], nDirich, classes.modes["INT_FLOAT"], m.getDirichlet())
     file.readline()

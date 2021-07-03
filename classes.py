@@ -10,8 +10,9 @@ modes = {
     "NOMODE": 0,
     "INT_FLOAT" : 1,
     "INT_FLOAT_FLOAT_FLOAT" : 2,
-    "INT_INT_INT_INT_INT" : 3
+    "INT10" : 3
 }
+#Change da world; My final message
 parameters = {
     "THERMAL_CONDUCTIVITY": 0,
     "HEAT_SOURCE" : 1
@@ -34,6 +35,12 @@ class item:
         self.node2 = None
         self.node3 = None
         self.node4 = None
+        self.node5 = None
+        self.node6 = None
+        self.node7 = None
+        self.node8 = None
+        self.node9 = None
+        self.node10 = None
         self.value = None
 
     def setID(self, identifier):
@@ -59,6 +66,24 @@ class item:
 
     def setNode4(self, node_4):
         self.node4 = node_4
+
+    def setNode5(self, node_5):
+        self.node1 = node_5
+
+    def setNode6(self, node_6):
+        self.node2 = node_6
+
+    def setNode7(self, node_7):
+        self.node3 = node_7
+
+    def setNode8(self, node_8):
+        self.node4 = node_8
+
+    def setNode9(self, node_9):
+        self.node1 = node_9
+
+    def setNode10(self, node_10):
+        self.node2 = node_10
 
     def setValue(self, value_to_assign):
         self.value = value_to_assign
@@ -86,32 +111,57 @@ class item:
 
     def getNode4(self):
         return self.node4
+    
+    def getNode5(self):
+        return self.node5
+
+    def getNode6(self):
+        return self.node6
+
+    def getNode7(self):
+        return self.node7
+
+    def getNode8(self):
+        return self.node8
+    
+    def getNode9(self):
+        return self.node9
+
+    def getNode10(self):
+        return self.node10
 
     def getValue(self):
         return self.value
 
-    def setValues(a,b,c,d,e,f,g, h, i):
+    def setValues(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o):
         None
 
 class node(item):
-    def setValues(self,a, b, c, d, e, f, g, h, i):
+    #a = id, bcd = valuesXYZ, efghijklmn = nodesOfElement, o = valueOfCondition
+    def setValues(self,a, b, c, d, e, f, g, h, i, j, k, l, m, n, o):
         self.id = a
         self.x = b
         self.y = c
         self.z = d
 
 class element(item):
-    def setValues(self,a, b, c, d, e, f, g, h, i):
+    def setValues(self,a, b, c, d, e, f, g, h, i, j, k, l, m, n, o):
         self.id = a
         self.node1 = e
         self.node2 = f
         self.node3 = g
         self.node4 = h
+        self.node5 = i
+        self.node6 = j
+        self.node7 = k
+        self.node8 = l
+        self.node9 = m
+        self.node10 = n
 
 class condition(item):
-    def setValues(self,a, b, c, d, e, f, g, h, i):
+    def setValues(self,a, b, c, d, e, f, g, h, i, j, k, l, m, n, o):
         self.node1 = e
-        self.value = i
+        self.value = o
 
 
 class mesh:
