@@ -4,7 +4,7 @@ import classes
 def showMatrix(m):
     for row in m:
         for cell in row:
-            print(cell, end="\t")
+            print(cell, end="  ")
         print()
 
 def showKs(Ks):
@@ -295,30 +295,68 @@ def localMiu(i, mesh, miu):
     miu[9][8] = J
     miu[9][9] = C
 
-def createLocalK(element, mesh, miu, K):
-    cero = math_tools.zeroes(10,10)
-#    miu = []
-#    localMiu(element,mesh,miu)
-    K = []
-    for n in range(3):
-        row = []
-        K.append(row)
+def createLocalK(element, mesh, miu):
+    J = calculateJacobiano(element, mesh)
+    Ei = 166
+    miu = []
+    localMiu(element,mesh,miu)
 
-    K[0][0] = miu
-    K[1][1] = miu
-    K[2][2] = miu
+    K = math_tools.zeroes(30,30)
+    temp = math_tools.zeroes(30,30)
 
-    K[0][1] = cero
-    K[0][2] = cero
-    K[1][0] = cero
-    K[1][2] = cero
-    K[2][0] = cero
-    K[2][1] = cero
+    h = 0
+    for i in range(10):
+        for j in range(10):
+            temp[i+h][j+h] = miu[i][j]
+    h = 10
+    for i in range(10):
+        for j in range(10):
+            temp[i+h][j+h] = miu[i][j]
+    h = 20
+    for i in range(10):
+        for j in range(10):
+            temp[i+h][j+h] = miu[i][j]
 
+    math_tools.productRealMatrix(Ei*J,temp, K)
+    return K
 
-#    for i in range(3):
-#        for j in range(3):
-            
+def createLocalB(element, mesh):
+    B = math_tools.vectorZeroes(30,1)
+    f = mesh.getParameter(classes.parameters["HEAT_SOURCE"])
+    J = calculateJacobiano(element, mesh)
+    b_i = J/120
+    T = []
+    math_tools.vectorZeroes(T, 10)
+    T[0] = 59
+    T[1] = -1
+    T[2] = -1
+    T[3] = -1
+    T[4] = 4
+    T[5] = 4
+    T[6] = 4
+    T[7] = 4
+    T[8] = 4
+    T[9] = 4
+
+    bMatrix = math_tools.zeroes(30,3)
+
+    h = 0
+    for i in range(10):
+        bMatrix[i][h] = T[i]
+    
+    h = 1
+    for i in range(10):
+        bMatrix[i][h] = T[i]
+    
+    h = 2
+    for i in range(10):
+        bMatrix[i][h] = T[i]
+    
+    temp = math_tools.zeroes(30,3)
+    math_tools.productRealMatrix(b_i,bMatrix,temp)
+    math_tools.productMatrixVector(temp, f, B)
+    return B
+
 
 def calculateJacobiano(ind,mesh):
     J=0.0
@@ -416,9 +454,22 @@ miu[9][7] = 'K'
 miu[9][8] = 'J'
 miu[9][9] = 'C'
 
-print('A')
-K = math_tools.zeroes(3,3)
-K2 = math_tools.zeroes(3,3)
-#createLocalK(0,0,miu,K)
+K = math_tools.zeroes(30,30)
+#for t in range(0,30,10):
+#    for i in range(10):
+#        for j in range(10):
+#            K[i+t][j+t] = miu[i][j]
 
+h = 0
+for i in range(10):
+    for j in range(10):
+        K[i+h][j+h] = miu[i][j]
+h = 10
+for i in range(10):
+    for j in range(10):
+        K[i+h][j+h] = miu[i][j]
+h = 20
+for i in range(10):
+    for j in range(10):
+        K[i+h][j+h] = miu[i][j]
 showMatrix(K)
