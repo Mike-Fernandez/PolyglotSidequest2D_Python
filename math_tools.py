@@ -1,4 +1,4 @@
-import sel
+#import sel
 
 def zeroes2(m, rows, columns):
     for i in range(rows):
@@ -118,7 +118,7 @@ matrix[2][1] = 1
 matrix[1][1] = 5
 matrix[0][2] = 2
 matrix[2][0] = 7
-sel.showMatrix(matrix)
+#sel.showMatrix(matrix)
 print("break")
 
 #det = determinant(matrix)
@@ -132,6 +132,6 @@ inverseMatrix(matrix, Minv)
 #print(len(multiplied))
 #productMatrixVector(matrix, multiplied, resp)
 #Minor = getMatrixMinor(matrix,1,0)
-sel.showMatrix(Minv)
+#sel.showMatrix(Minv)
 #printVector(resp)
 #print(det)

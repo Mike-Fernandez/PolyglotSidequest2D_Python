@@ -1,8 +1,10 @@
 import math_tools
+import classes
+
 def showMatrix(m):
     for row in m:
         for cell in row:
-            print(cell, end=" ")
+            print(cell, end="\t")
         print()
 
 def showKs(Ks):
@@ -107,7 +109,7 @@ def createLocalc1(x1, x2):
 def createLocalc2(x1, x2, x8):
     return (1/(x2-x1))*(4*x1+4*x2-8*x8)
 
-def calculateA(i,matriz,mesh): #matriz a por referencia
+def calculateA(i,mesh): #matriz a por referencia
     element = mesh.getElement(i)
     n1 = mesh.getNode(element.getNode1()-1)
     n2 = mesh.getNode(element.getNode2()-1)
@@ -115,27 +117,207 @@ def calculateA(i,matriz,mesh): #matriz a por referencia
     c1 = createLocalc1(n1.getX(), n2.getX())
     c2 = createLocalc2(n1.getX(), n2.getX(), n8.getX())
 
-    return (-1/pow(c2,2)*192)*pow(4*c1-c2, 4) - (1/c2*24)*pow(4*c1-c2, 3) - (1/pow(c2,3)*3840)*pow(4*c1-c2, 5) + (1/pow(c2,3)*3840)*pow(4*c1-3*c2, 5)
+    return (-1/pow(c2,2)*192)*pow(4*c1-c2, 4) - (1/c2*24)*pow(4*c1-c2, 3) - (1/pow(c2,3)*3840)*pow(4*c1-c2, 5) + (1/pow(c2,3)*3840)*pow(4*c1+3*c2, 5)
 
 
 
-def calculateB(matriz):
-    matriz[0][0] = -1
-    matriz[0][1] = 1
-    matriz[0][2] = 0
-    matriz[0][3] = 0
-    
-    matriz[1][0] = -1
-    matriz[1][1] = 0
-    matriz[1][2] = 1
-    matriz[1][3] = 0
+def calculateB(i, mesh):
+    element = mesh.getElement(i)
+    n1 = mesh.getNode(element.getNode1()-1)
+    n2 = mesh.getNode(element.getNode2()-1)
+    n8 = mesh.getNode(element.getNode8()-1)
+    c1 = createLocalc1(n1.getX(), n2.getX())
+    c2 = createLocalc2(n1.getX(), n2.getX(), n8.getX())
 
-    matriz[2][0] = -1
-    matriz[2][1] = 0
-    matriz[2][2] = 0
-    matriz[2][3] = 1
+    return (-1/pow(c2,2)*192)*pow(4*c1+c2, 4) + (1/c2*24)*pow(4*c1+c2, 3) + (1/pow(c2,3)*3840)*pow(4*c1+c2, 5) - (1/pow(c2,3)*3840)*pow(4*c1-3*c2, 5)
 
-def calculateLocalJ(ind,mesh):
+def calculateC(i, mesh):
+    element = mesh.getElement(i)
+    n1 = mesh.getNode(element.getNode1()-1)
+    n2 = mesh.getNode(element.getNode2()-1)
+    n8 = mesh.getNode(element.getNode8()-1)
+    c2 = createLocalc2(n1.getX(), n2.getX(), n8.getX())
+
+    return (4/15)*pow(c2,2)
+
+def calculateD(i, mesh):
+    element = mesh.getElement(i)
+    n1 = mesh.getNode(element.getNode1()-1)
+    n2 = mesh.getNode(element.getNode2()-1)
+    n8 = mesh.getNode(element.getNode8()-1)
+    c1 = createLocalc1(n1.getX(), n2.getX())
+    c2 = createLocalc2(n1.getX(), n2.getX(), n8.getX())
+
+    return (1/pow(c2,2)*192)*pow(4*c2-c1, 4) - (1/pow(c2,3)*3840)*pow(4*c2-c1, 5) + (1/pow(c2,3)*7680)*pow(4*c2+8*c1, 5) - (7/pow(c2,3)*7680)*pow(4*c2-8*c1, 5) + (1/pow(c2,3)*768)*pow(-8*c1,5) - (c1/pow(c2,3)*96)*pow(4*c2-8*c1,4) + ((2*c1-1)/pow(c2,3)*192)*pow(-8*c1,4)
+
+def calculateE(i, mesh):
+    element = mesh.getElement(i)
+    n1 = mesh.getNode(element.getNode1()-1)
+    n2 = mesh.getNode(element.getNode2()-1)
+    n8 = mesh.getNode(element.getNode8()-1)
+    c1 = createLocalc1(n1.getX(), n2.getX())
+    c2 = createLocalc2(n1.getX(), n2.getX(), n8.getX())
+
+    return (8/3)*pow(c1,2) + (1/30)*pow(c2,2)
+
+def calculateF(i, mesh):
+    element = mesh.getElement(i)
+    n1 = mesh.getNode(element.getNode1()-1)
+    n2 = mesh.getNode(element.getNode2()-1)
+    n8 = mesh.getNode(element.getNode8()-1)
+    c1 = createLocalc1(n1.getX(), n2.getX())
+    c2 = createLocalc2(n1.getX(), n2.getX(), n8.getX())
+
+    return (2/3)*c1*c2 - (1/30)*pow(c2,2)
+
+def calculateG(i, mesh):
+    element = mesh.getElement(i)
+    n1 = mesh.getNode(element.getNode1()-1)
+    n2 = mesh.getNode(element.getNode2()-1)
+    n8 = mesh.getNode(element.getNode8()-1)
+    c1 = createLocalc1(n1.getX(), n2.getX())
+    c2 = createLocalc2(n1.getX(), n2.getX(), n8.getX())
+
+    return (-16/3)*pow(c1,2) - (4/3)*c1*c2 - (2/15)*pow(c2,2)
+
+def calculateH(i, mesh):
+    element = mesh.getElement(i)
+    n1 = mesh.getNode(element.getNode1()-1)
+    n2 = mesh.getNode(element.getNode2()-1)
+    n8 = mesh.getNode(element.getNode8()-1)
+    c1 = createLocalc1(n1.getX(), n2.getX())
+    c2 = createLocalc2(n1.getX(), n2.getX(), n8.getX())
+
+    return (2/3)*c1*c2 + (1/30)*pow(c2,2)
+
+def calculateI(i, mesh):
+    element = mesh.getElement(i)
+    n1 = mesh.getNode(element.getNode1()-1)
+    n2 = mesh.getNode(element.getNode2()-1)
+    n8 = mesh.getNode(element.getNode8()-1)
+    c1 = createLocalc1(n1.getX(), n2.getX())
+    c2 = createLocalc2(n1.getX(), n2.getX(), n8.getX())
+
+    return (-16/3)*pow(c1,2) - (2/3)*pow(c2,2)
+
+def calculateJ(i, mesh):
+    element = mesh.getElement(i)
+    n1 = mesh.getNode(element.getNode1()-1)
+    n2 = mesh.getNode(element.getNode2()-1)
+    n8 = mesh.getNode(element.getNode8()-1)
+    c1 = createLocalc1(n1.getX(), n2.getX())
+    c2 = createLocalc2(n1.getX(), n2.getX(), n8.getX())
+
+    return (2/15)*pow(c2,2)
+
+def calculateK(i, mesh):
+    element = mesh.getElement(i)
+    n1 = mesh.getNode(element.getNode1()-1)
+    n2 = mesh.getNode(element.getNode2()-1)
+    n8 = mesh.getNode(element.getNode8()-1)
+    c1 = createLocalc1(n1.getX(), n2.getX())
+    c2 = createLocalc2(n1.getX(), n2.getX(), n8.getX())
+
+    return (-4/3)*c1*c2
+
+def localMiu(i, mesh, miu):
+    element = mesh.getElement(i)
+    n1 = mesh.getNode(element.getNode1()-1)
+    n2 = mesh.getNode(element.getNode2()-1)
+    n8 = mesh.getNode(element.getNode8()-1)
+    A = calculateA(i,mesh)
+    B = calculateB(i,mesh)
+    C = calculateC(i,mesh)
+    D = calculateD(i,mesh)
+    E = calculateE(i,mesh)
+    F = calculateF(i,mesh)
+    G = calculateG(i,mesh)
+    H = calculateH(i,mesh)
+    I = calculateI(i,mesh)
+    J = calculateJ(i,mesh)
+    K = calculateK(i,mesh)
+
+    miu = math_tools.zeroes(10,10)
+
+    miu[0][0] = A
+    miu[0][1] = E
+    miu[0][4] = -F
+    miu[0][6] = -F
+    miu[0][7] = G
+    miu[0][8] = F
+    miu[0][9] = F
+
+    miu[1][0] = E
+    miu[1][1] = B
+    miu[1][4] = -H
+    miu[1][6] = -H
+    miu[1][7] = I
+    miu[1][8] = H
+    miu[1][9] = H
+
+    miu[4][0] = -F
+    miu[4][1] = -H
+    miu[4][4] = C
+    miu[4][6] = J
+    miu[4][7] = -K
+    miu[4][8] = -C
+    miu[4][9] = -J
+
+    miu[6][0] = -F
+    miu[6][1] = -H
+    miu[6][4] = J
+    miu[6][6] = C
+    miu[6][7] = -K
+    miu[6][8] = -J
+    miu[6][9] = -C
+
+    miu[7][0] = G
+    miu[7][1] = I
+    miu[7][4] = -K
+    miu[7][6] = -K
+    miu[7][7] = D
+    miu[7][8] = K
+    miu[7][9] = K
+
+    miu[8][0] = F
+    miu[8][1] = H
+    miu[8][4] = -C
+    miu[8][6] = -J
+    miu[8][7] = K
+    miu[8][8] = C
+    miu[8][9] = J
+
+    miu[9][0] = F
+    miu[9][1] = H
+    miu[9][4] = -J
+    miu[9][6] = -C
+    miu[9][7] = K
+    miu[9][8] = J
+    miu[9][9] = C
+
+def createLocalK(element, mesh):
+    cero = math_tools.zeroes(10,10)
+    miu = []
+    localMiu(element,mesh,miu)
+
+    K = [[]]
+    K[0][0] = miu
+    K[1][1] = miu
+    K[2][2] = miu
+
+    K[0][1] = cero
+    K[0][2] = cero
+    K[1][0] = cero
+    K[1][2] = cero
+    K[2][0] = cero
+    K[2][1] = cero
+
+
+#    for i in range(3):
+#        for j in range(3):
+            
+
+def calculateJacobiano(ind,mesh):
     J=0.0
     a=0.0
     b=0.0
@@ -176,3 +358,10 @@ def calculate(K,b,T):
     math_tools.inverseMatrix(K,Kinv)
     print("Calculo de respuesta...\n")
     math_tools.productMatrixVector(Kinv,b,T)
+
+
+m = classes.mesh()
+miu = math_tools.zeroes(10,10)
+
+
+showMatrix(miu)
