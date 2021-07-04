@@ -8,20 +8,24 @@ lines = {
 }
 modes = {
     "NOMODE": 0,
-    "INT_FLOAT" : 1,
+    "CONDITION_INT_FLOAT_FLOAT_FLOAT" : 1,
     "INT_FLOAT_FLOAT_FLOAT" : 2,
     "INT10" : 3
 }
 #Change da world; My final message
 parameters = {
-    "THERMAL_CONDUCTIVITY": 0,
-    "HEAT_SOURCE" : 1
+    "EI" : 0,
+    "WX": 1,
+    "WY": 2,
+    "WZ": 3
 }
 sizes ={
     "NODES" : 0,
     "ELEMENTS" : 1,
-    "DIRICHLET" : 2,
-    "NEUMANN" : 3
+    "DIRICHLETX" : 2,
+    "DIRICHLETY" : 3,
+    "DIRICHLETZ" : 4,
+    "NEUMANN" : 5
 }
 
 class item:
@@ -41,7 +45,10 @@ class item:
         self.node8 = None
         self.node9 = None
         self.node10 = None
-        self.value = None
+        self.valueX = None
+        self.valueY = None
+        self.valueZ = None
+        self.valueN = None
 
     def setID(self, identifier):
         self.id = identifier
@@ -85,7 +92,13 @@ class item:
     def setNode10(self, node_10):
         self.node2 = node_10
 
-    def setValue(self, value_to_assign):
+    def setValueX(self, value_to_assign):
+        self.value = value_to_assign
+    
+    def setValueY(self, value_to_assign):
+        self.value = value_to_assign
+    
+    def setValueZ(self, value_to_assign):
         self.value = value_to_assign
 
     def getID(self):
@@ -159,10 +172,11 @@ class element(item):
         self.node10 = n
 
 class condition(item):
-    def setValues(self,a, b, c, d, e, f, g, h, i, j, k, l, m, n, o):
+    def setValues(self,a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q):
         self.node1 = e
-        self.value = o
-
+        self.valueX = o
+        self.valueY = p
+        self.valueZ = q
 
 class mesh:
     def __init__(self):
@@ -174,9 +188,11 @@ class mesh:
         self.dirichlet_list = []
         self.neumann_list = []
 
-    def setParameters(self,k,Q):
-        self.parameters[parameters["THERMAL_CONDUCTIVITY"]] = k
-        self.parameters[parameters["HEAT_SOURCE"]] = Q
+    def setParameters(self,ei,w_x, w_y, w_z):
+        self.parameters[parameters["EI"]] = ei
+        self.parameters[parameters["WX"]] = w_x
+        self.parameters[parameters["WY"]] = w_y
+        self.parameters[parameters["WZ"]] = w_z
 
     def setSizes(self,nnodes,neltos,ndirich,nneu):
         self.sizes[sizes["NODES"]] = nnodes

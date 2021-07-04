@@ -562,7 +562,11 @@ def applyDirichlet(mesh, K, b):
         temp = b.pop(index)
 
         for row in range(len(K)):
+            #Cell para X
             cell = K[row][index]
+            #Cell para componente en Y del vector b va a estar 10 posiciones despues del index
+            
+            #Cell para componente en Z del vector b va a estar 20 posiciones despues del index
             K[row].pop(index)
             b[row] += -1*c.getValues*cell
 
