@@ -8,7 +8,7 @@ lines = {
 }
 modes = {
     "NOMODE": 0,
-    "CONDITION_INT_FLOAT_FLOAT_FLOAT" : 1,
+    "INT_FLOAT" : 1,
     "INT_FLOAT_FLOAT_FLOAT" : 2,
     "INT10" : 3
 }
@@ -22,10 +22,8 @@ parameters = {
 sizes ={
     "NODES" : 0,
     "ELEMENTS" : 1,
-    "DIRICHLETX" : 2,
-    "DIRICHLETY" : 3,
-    "DIRICHLETZ" : 4,
-    "NEUMANN" : 5
+    "DIRICHLET" : 2,
+    "NEUMANN" : 3
 }
 
 class item:
@@ -45,10 +43,7 @@ class item:
         self.node8 = None
         self.node9 = None
         self.node10 = None
-        self.valueX = None
-        self.valueY = None
-        self.valueZ = None
-        self.valueN = None
+        self.value = None
 
     def setID(self, identifier):
         self.id = identifier
@@ -92,13 +87,7 @@ class item:
     def setNode10(self, node_10):
         self.node2 = node_10
 
-    def setValueX(self, value_to_assign):
-        self.value = value_to_assign
-    
-    def setValueY(self, value_to_assign):
-        self.value = value_to_assign
-    
-    def setValueZ(self, value_to_assign):
+    def setValue(self, value_to_assign):
         self.value = value_to_assign
 
     def getID(self):
@@ -172,15 +161,13 @@ class element(item):
         self.node10 = n
 
 class condition(item):
-    def setValues(self,a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q):
+    def setValues(self,a, b, c, d, e, f, g, h, i, j, k, l, m, n, o):
         self.node1 = e
-        self.valueX = o
-        self.valueY = p
-        self.valueZ = q
+        self.value = o
 
 class mesh:
     def __init__(self):
-        self.parameters = [None for n in range(2)]
+        self.parameters = [None for n in range(4)]
         self.sizes = [None for n in range(4)]
         self.node_list = []
         self.element_list = []
@@ -220,6 +207,7 @@ class mesh:
             new_indice = int()
             self.indices_dirich.append(new_indice)
 #        self.indices_dirich = [int for n in range(self.sizes[sizes["DIRICHLET"]])]
+        print("Size of dirichlet " + str(self.sizes[sizes["DIRICHLET"]]))
         for n in range(self.sizes[sizes["DIRICHLET"]]):
             new_dirich = condition()
             self.dirichlet_list.append(new_dirich)

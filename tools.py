@@ -26,7 +26,7 @@ def INT_FLOAT_FLOAT_FLOAT(file, item_list: classes.item, i):
     item_list[i].setValues(e, r, rr, rrr, 
         classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], 
         classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], 
-        classes.indicators["NOTHING"], classes.indicators["NOTHING"])
+        classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"])
 
 def INT10(file, item_list, i):
     e1 = 0
@@ -39,6 +39,7 @@ def INT10(file, item_list, i):
     e8 = 0
     e9 = 0
     e10 = 0
+    e11 = 0
     array = [int(x) for x in file.readline().split()]
     e1 = array[0]
     e2 = array[1]
@@ -50,8 +51,9 @@ def INT10(file, item_list, i):
     e8 = array[7]
     e9 = array[8]
     e10 = array[9]
+    e11 = array[10]
     item_list[i].setValues(e1, classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], 
-        e2, e3, e4, e5, e6, e7, e8, e9, e10, classes.indicators["NOTHING"])
+        e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, classes.indicators["NOTHING"])
 
 switch = {
     classes.modes["INT_FLOAT"]: INT_FLOAT,
@@ -99,18 +101,22 @@ def leerMallayCondiciones(m, filename):
     inputFileName = addExtension(filename, ".dat")
     file = open(inputFileName, "r")
     line  = [float(x) for x in file.readline().split()]
-    k = line[0]
-    Q = line[1]
+    Ei = line[0]
+    w_x = line[1]
+    w_y = line[2]
+    w_z = line[3]
     line = [int(x) for x in file.readline().split()]
     nNodes = line[0]
     nEltos = line[1]
-    nDirich = line[2]
-    nNeu = line[3]
+    nDirichx = line[2]
+    nDirichy = line[3]
+    nDirichz = line[4]
+    nNeu = line[5]
 
     file.readline()
 
-    m.setParameters(k,Q)
-    m.setSizes(nNodes, nEltos, nDirich, nNeu)
+    m.setParameters(Ei, w_x, w_y, w_z)
+    m.setSizes(nNodes, nEltos, nDirichx + nDirichy + nDirichz, nNeu)
     m.createData()
 
     obtenerDatos(file, classes.lines["SINGLELINE"], nNodes, classes.modes["INT_FLOAT_FLOAT_FLOAT"], m.getNodes())
@@ -118,10 +124,17 @@ def leerMallayCondiciones(m, filename):
     item_list = m.node_list
     for i in range(10):
         print("Printing itemList from leerMalla "+ str(item_list[i].getX()) + " " + str(item_list[i].getY()) + " " + str(item_list[i].getZ()))
-    obtenerDatos(file, classes.lines["DOUBLELINE"], nEltos, classes.modes["INT_INT_INT_INT_INT"], m.getElements())
+    obtenerDatos(file, classes.lines["DOUBLELINE"], nEltos, classes.modes["INT10"], m.getElements())
     file.readline()
-    obtenerDatos(file, classes.lines["DOUBLELINE"], nDirich, classes.modes["INT_FLOAT"], m.getDirichlet())
-    file.readline()
+    obtenerDatos(file, classes.lines["DOUBLELINE"], nDirichx+nDirichy+nDirichz, classes.modes["INT_FLOAT"], m.getDirichlet())
+#    temp = file.readline()
+#    print("line after reading dirichletX"+temp)
+#    obtenerDatos(file, classes.lines["DOUBLELINE"], nDirichy, classes.modes["INT_FLOAT"], m.getDirichlet())
+#    temp = file.readline()
+#    print("line after reading dirichletY"+temp)
+#    obtenerDatos(file, classes.lines["DOUBLELINE"], nDirichz, classes.modes["INT_FLOAT"], m.getDirichlet())
+    temp = file.readline()
+    print("line after reading dirichletZ"+temp)
     obtenerDatos(file, classes.lines["DOUBLELINE"], nNeu, classes.modes["INT_FLOAT"], m.getNeumann())
 
     file.close()
@@ -163,7 +176,7 @@ def writeResults(m, T, filename):
     file.close()
 
 #m = classes.mesh()
-#leerMallayCondiciones(m, "3dtest")
+#leerMallayCondiciones(m, "ProyectoPolyglot")
 
 #m.node_list[0].setX(9)
 #print(m.node_list[0].getX())
@@ -174,20 +187,22 @@ def writeResults(m, T, filename):
 #    print(str(m.getNodes()[i].getX())+" "+str(m.getNodes()[i].getY())+" "+str(m.getNodes()[i].getZ()))
 #print("ELEMENTS")
 #for i in range(m.getSize(classes.sizes["ELEMENTS"])):
-#    print(str(m.getElements()[i].getNode1())+" "+str(m.getElements()[i].getNode2())+" "+str(m.getElements()[i].getNode3())+" "+str(m.getElements()[i].getNode4()))
+#    print(str(m.getElements()[i].getNode1())+" "+str(m.getElements()[i].getNode2())+" "+str(m.getElements()[i].getNode3())+" "+str(m.getElements()[i].getNode4())
+#        +" "+str(m.getElements()[i].getNode5()) +" "+str(m.getElements()[i].getNode6()) +" "+str(m.getElements()[i].getNode7()) +" "+str(m.getElements()[i].getNode8())
+#        +" "+str(m.getElements()[i].getNode9()) +" "+str(m.getElements()[i].getNode10()))
 #print("NEUMANN")
 #for i in range(m.getSize(classes.sizes["NEUMANN"])):
 #    print(str(m.getNeumann()[i].getNode1())+" "+str(m.getNeumann()[i].getValue()))
 #print("DIRICHLET INDICES")
 #for i in range(m.getSize(classes.sizes["DIRICHLET"])):
 #    print(str(m.getDirichletIndices()[i]))
-# print("DIRICHLET")
-# for i in range(m.getSize(classes.sizes["DIRICHLET"])):
+#print("DIRICHLET")
+#for i in range(m.getSize(classes.sizes["DIRICHLET"])):
 #     print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
-# m.getDirichlet()[0].setNode1(4)
-# print("DIRICHLET")
-# for i in range(m.getSize(classes.sizes["DIRICHLET"])):
-#     print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
+#m.getDirichlet()[0].setNode1(4)
+#print("DIRICHLET")
+#for i in range(m.getSize(classes.sizes["DIRICHLET"])):
+#    print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
 
 #obtenerDatos("3dtest.dat", 0, 0, 0, 0)
 #T = []
