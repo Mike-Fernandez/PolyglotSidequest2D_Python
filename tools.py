@@ -92,8 +92,6 @@ def addExtension(filename, extension):
 
 def leerMallayCondiciones(m, filename):
     inputFileName = ""
-    k = 0.0 
-    Q = 0.0
     nNodes = 0  
     nEltos=0 
     nDirich=0 
@@ -102,9 +100,9 @@ def leerMallayCondiciones(m, filename):
     file = open(inputFileName, "r")
     line  = [float(x) for x in file.readline().split()]
     Ei = line[0]
-    w_x = line[1]
-    w_y = line[2]
-    w_z = line[3]
+    f_x = line[1]
+    f_y = line[2]
+    f_z = line[3]
     line = [int(x) for x in file.readline().split()]
     nNodes = line[0]
     nEltos = line[1]
@@ -115,7 +113,7 @@ def leerMallayCondiciones(m, filename):
 
     file.readline()
 
-    m.setParameters(Ei, w_x, w_y, w_z)
+    m.setParameters(Ei, f_x, f_y, f_z)
     m.setSizes(nNodes, nEltos, nDirichx + nDirichy + nDirichz, nNeu)
     m.createData()
 

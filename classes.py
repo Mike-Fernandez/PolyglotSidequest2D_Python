@@ -15,9 +15,9 @@ modes = {
 #Change da world; My final message
 parameters = {
     "EI" : 0,
-    "WX": 1,
-    "WY": 2,
-    "WZ": 3
+    "FX": 1,
+    "FY": 2,
+    "FZ": 3
 }
 sizes ={
     "NODES" : 0,
@@ -175,11 +175,11 @@ class mesh:
         self.dirichlet_list = []
         self.neumann_list = []
 
-    def setParameters(self,ei,w_x, w_y, w_z):
+    def setParameters(self,ei,f_x, f_y, f_z):
         self.parameters[parameters["EI"]] = ei
-        self.parameters[parameters["WX"]] = w_x
-        self.parameters[parameters["WY"]] = w_y
-        self.parameters[parameters["WZ"]] = w_z
+        self.parameters[parameters["FX"]] = f_x
+        self.parameters[parameters["FY"]] = f_y
+        self.parameters[parameters["FZ"]] = f_z
 
     def setSizes(self,nnodes,neltos,ndirich,nneu):
         self.sizes[sizes["NODES"]] = nnodes

@@ -297,7 +297,7 @@ def localMiu(i, mesh, miu):
 
 def createLocalK(element, mesh):
     J = calculateJacobiano(element, mesh)
-    Ei = 166
+    Ei = mesh.getParameter(classes.parameters["EI"])
     miu = []
     localMiu(element,mesh,miu)
 
@@ -322,7 +322,14 @@ def createLocalK(element, mesh):
 
 def createLocalB(element, mesh):
     B = math_tools.vectorZeroes(30,1)
-    f = mesh.getParameter(classes.parameters["HEAT_SOURCE"])
+    fx = mesh.getParameter(classes.parameters["FX"])
+    fy = mesh.getParameter(classes.parameters["FY"])
+    fz = mesh.getParameter(classes.parameters["FZ"])
+    f = []
+    math_tools.vectorZeroes(f,3)
+    f[0] = fx
+    f[1] = fy
+    f[2] = fz
     J = calculateJacobiano(element, mesh)
     b_i = J/120
     T = []
