@@ -104,6 +104,8 @@ def ab_ij(ai,aj,a1,bi,bj,b1):
     return (ai - a1)*(bj - b1) - (aj - a1)*(bi - b1)
 
 def createLocalc1(x1, x2):
+    print("x1 " + str(x1))
+    print("x2 " + str(x2))
     return 1/pow(x2-x1,2)
 
 def createLocalc2(x1, x2, x8):

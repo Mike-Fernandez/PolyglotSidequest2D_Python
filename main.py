@@ -7,8 +7,8 @@ import tools
 import sys
 
 
-filename = []
-filename.append(sys.argv[2])
+filename = str()
+filename = sys.argv[1]
 
 #Todas se inician como arrays, pero mas adelante se definiran por las funciones como matrices o vectores
 localKs = []

@@ -73,7 +73,9 @@ def obtenerDatos(file, nlines, n, mode, item_list):
 #        print("Printing itemList from obtenerDatos "+ str(item_list[i].getX()) + " " + str(item_list[i].getY()) + " " + str(item_list[i].getZ()))
 
 def correctConditions(n, list, indices):
+    print("Within correct Conditions n: " + str(n))
     for i in range(n):
+        print("within for in correct conditions")
         indices[i] = list[i].getNode1()
         print("INDICES" + str(indices[i]))
     
@@ -109,19 +111,20 @@ def leerMallayCondiciones(m, filename):
     nDirichx = line[2]
     nDirichy = line[3]
     nDirichz = line[4]
+    nDirich = nDirichx + nDirichy + nDirichz
     nNeu = line[5]
 
     file.readline()
 
     m.setParameters(Ei, f_x, f_y, f_z)
-    m.setSizes(nNodes, nEltos, nDirichx + nDirichy + nDirichz, nNeu)
+    m.setSizes(nNodes, nEltos, nDirich, nNeu)
     m.createData()
 
     obtenerDatos(file, classes.lines["SINGLELINE"], nNodes, classes.modes["INT_FLOAT_FLOAT_FLOAT"], m.getNodes())
     file.readline()
-    item_list = m.node_list
-    for i in range(10):
-        print("Printing itemList from leerMalla "+ str(item_list[i].getX()) + " " + str(item_list[i].getY()) + " " + str(item_list[i].getZ()))
+#    item_list = m.node_list
+#    for i in range(10):
+#        print("Printing itemList from leerMalla "+ str(item_list[i].getX()) + " " + str(item_list[i].getY()) + " " + str(item_list[i].getZ()))
     obtenerDatos(file, classes.lines["DOUBLELINE"], nEltos, classes.modes["INT10"], m.getElements())
     file.readline()
     obtenerDatos(file, classes.lines["DOUBLELINE"], nDirichx+nDirichy+nDirichz, classes.modes["INT_FLOAT"], m.getDirichlet())
@@ -137,6 +140,7 @@ def leerMallayCondiciones(m, filename):
 
     file.close()
     correctConditions(nDirich, m.getDirichlet(), m.getDirichletIndices())
+    print("After correcting the conditions")
 
 def findIndex(v, s, arr):
     for i in range(s):
@@ -173,8 +177,8 @@ def writeResults(m, T, filename):
     file.write("End values\n")
     file.close()
 
-#m = classes.mesh()
-#leerMallayCondiciones(m, "ProyectoPolyglot")
+m = classes.mesh()
+leerMallayCondiciones(m, "ProyectoPolyglot")
 
 #m.node_list[0].setX(9)
 #print(m.node_list[0].getX())
@@ -191,9 +195,10 @@ def writeResults(m, T, filename):
 #print("NEUMANN")
 #for i in range(m.getSize(classes.sizes["NEUMANN"])):
 #    print(str(m.getNeumann()[i].getNode1())+" "+str(m.getNeumann()[i].getValue()))
+#dirich_indices = m.getDirichletIndices()
 #print("DIRICHLET INDICES")
 #for i in range(m.getSize(classes.sizes["DIRICHLET"])):
-#    print(str(m.getDirichletIndices()[i]))
+#    print(str(dirich_indices[i]))
 #print("DIRICHLET")
 #for i in range(m.getSize(classes.sizes["DIRICHLET"])):
 #     print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
@@ -203,6 +208,6 @@ def writeResults(m, T, filename):
 #    print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
 
 #obtenerDatos("3dtest.dat", 0, 0, 0, 0)
-#T = []
-#vectorZeroes(T,30)
-#writeResults(m,T,"3dtest")
+T = []
+vectorZeroes(T,30)
+writeResults(m,T,"ProyectoPolyglot")
