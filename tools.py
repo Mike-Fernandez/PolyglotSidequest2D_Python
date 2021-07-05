@@ -73,15 +73,11 @@ def obtenerDatos(file, nlines, n, mode, item_list):
 #        print("Printing itemList from obtenerDatos "+ str(item_list[i].getX()) + " " + str(item_list[i].getY()) + " " + str(item_list[i].getZ()))
 
 def correctConditions(n, list, indices):
-    print("Within correct Conditions n: " + str(n))
     for i in range(n):
-        print("within for in correct conditions")
         indices[i] = list[i].getNode1()
-        print("INDICES" + str(indices[i]))
     
     for i in range(n-1):
         pivot = list[i].getNode1()
-        print("Pivot"+ str(pivot))
         for j in range(i, n):
             pos = list[j].getNode1()
             if(pos > pivot):
@@ -199,15 +195,15 @@ leerMallayCondiciones(m, "ProyectoPolyglot")
 #print("DIRICHLET INDICES")
 #for i in range(m.getSize(classes.sizes["DIRICHLET"])):
 #    print(str(dirich_indices[i]))
-#print("DIRICHLET")
-#for i in range(m.getSize(classes.sizes["DIRICHLET"])):
-#     print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
+print("DIRICHLET")
+for i in range(m.getSize(classes.sizes["DIRICHLET"])):
+     print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
 #m.getDirichlet()[0].setNode1(4)
 #print("DIRICHLET")
 #for i in range(m.getSize(classes.sizes["DIRICHLET"])):
 #    print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
 
 #obtenerDatos("3dtest.dat", 0, 0, 0, 0)
-T = []
-vectorZeroes(T,30)
-writeResults(m,T,"ProyectoPolyglot")
+#T = []
+#vectorZeroes(T,30)
+#writeResults(m,T,"ProyectoPolyglot")

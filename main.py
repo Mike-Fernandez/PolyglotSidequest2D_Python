@@ -23,11 +23,11 @@ tools.leerMallayCondiciones(m,filename)
 
 sel.crearSistemasLocales(m, localKs, localBs)
 
-K = math_tools.zeroes(m.getSize(classes.sizes["NODES"]), m.getSize(classes.sizes["NODES"]))
-math_tools.vectorZeroes(B, m.getSize(classes.sizes["NODES"]))
+K = math_tools.zeroes(3*m.getSize(classes.sizes["NODES"]), 3*m.getSize(classes.sizes["NODES"]))
+math_tools.vectorZeroes(B, 3*m.getSize(classes.sizes["NODES"]))
 
 sel.assembly(m, localKs, localBs, K, B)
-
+print("size of global K " + str(len(K)))
 sel.applyNeumann(m, B)
 sel.applyDirichlet(m, K, B)
 

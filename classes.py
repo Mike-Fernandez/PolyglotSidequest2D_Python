@@ -240,6 +240,6 @@ class mesh:
 
     def getCondition(self,i,type):
         if(type == sizes["DIRICHLET"]):
-            return self.direchlet_list[i]
+            return self.dirichlet_list[i]
         else:
             return self.neumann_list[i]

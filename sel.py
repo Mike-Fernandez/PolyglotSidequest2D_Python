@@ -104,12 +104,22 @@ def ab_ij(ai,aj,a1,bi,bj,b1):
     return (ai - a1)*(bj - b1) - (aj - a1)*(bi - b1)
 
 def createLocalc1(x1, x2):
-    print("x1 " + str(x1))
-    print("x2 " + str(x2))
-    return 1/pow(x2-x1,2)
+    small = 0.00000000000000001
+    if(x2-x1 == 0):
+        return 1/pow(small,2)
+    else:
+        return 1/pow(x2-x1,2)
 
 def createLocalc2(x1, x2, x8):
-    return (1/(x2-x1))*(4*x1+4*x2-8*x8)
+#    print("x1 " + str(x1))
+#    print("x2 " + str(x2))
+#    print("x8 " + str(x8))
+    small = 0.00000000000000001
+#    print("Small al cubo "+str((1/(small))*(small)))
+    if(x2-x1 == 0 or (4*x1+4*x2-8*x8) == 0):
+        return (1/(small))*(small)
+    else:
+        return (1/(x2-x1))*(4*x1+4*x2-8*x8)
 
 def calculateA(i,mesh): #matriz a por referencia
     element = mesh.getElement(i)
@@ -239,7 +249,7 @@ def localMiu(i, mesh, miu):
     J = calculateJ(i,mesh)
     K = calculateK(i,mesh)
 
-    miu = math_tools.zeroes(10,10)
+#    miu = math_tools.zeroes(10,10)
 
     miu[0][0] = A
     miu[0][1] = E
@@ -300,8 +310,10 @@ def localMiu(i, mesh, miu):
 def createLocalK(element, mesh):
     J = calculateJacobiano(element, mesh)
     Ei = mesh.getParameter(classes.parameters["EI"])
-    miu = []
+    miu = math_tools.zeroes(10,10)
     localMiu(element,mesh,miu)
+#    print("Miu")
+#    showMatrix(miu)
 
     K = math_tools.zeroes(30,30)
     temp = math_tools.zeroes(30,30)
@@ -323,7 +335,9 @@ def createLocalK(element, mesh):
     return K
 
 def createLocalB(element, mesh):
-    B = math_tools.vectorZeroes(30,1)
+    B = []
+    math_tools.vectorZeroes(B,30)
+#    B = math_tools.zeroes(30,1)
     fx = mesh.getParameter(classes.parameters["FX"])
     fy = mesh.getParameter(classes.parameters["FY"])
     fz = mesh.getParameter(classes.parameters["FZ"])
@@ -565,9 +579,14 @@ def applyNeumann(mesh, b):
 def applyDirichlet(mesh, K, b):
     for i in range(mesh.sizes[classes.sizes["DIRICHLET"]]):
         c = mesh.getCondition(i,classes.sizes["DIRICHLET"])
+#        print("DIRICHLET")
+#        for m in range(mesh.getSize(classes.sizes["DIRICHLET"])):
+#            print(str(mesh.getDirichlet()[m].getNode1())+" "+str(mesh.getDirichlet()[m].getValue()))
         index = c.getNode1()-1
         temp = []
+#        print(str(i) + " Index from apply dirichlet " + str(index))
         temp = K.pop(index)
+        print(temp)
         temp = b.pop(index)
 
         for row in range(len(K)):
@@ -577,7 +596,7 @@ def applyDirichlet(mesh, K, b):
             
             #Cell para componente en Z del vector b va a estar 20 posiciones despues del index
             K[row].pop(index)
-            b[row] += -1*c.getValues*cell
+            b[row] += -1*c.getValue()*cell
 
 def calculate(K,b,T):
     print("Iniciando calculo de respuesta...\n")
