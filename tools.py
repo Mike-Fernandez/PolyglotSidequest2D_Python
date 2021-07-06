@@ -187,13 +187,6 @@ def writeResults(m, T, filename):
     file.write("End values\n")
     file.close()
 
-def writeArguments(arguments, filename):
-    file = open(filename, "w")
-    i  = 0
-    for arg in arguments:
-        file.write(str(i) + str(arg) + "\n")
-        i += 1
-    file.close()
 #m = classes.mesh()
 #leerMallayCondiciones(m, "ProyectoPolyglot")
 

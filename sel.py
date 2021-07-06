@@ -602,7 +602,7 @@ def calculate(K,b,T):
     print("Iniciando calculo de respuesta...\n")
     Kinv = []
     print("Calculo de inversa...\n")
-    math_tools.inverseMatrix(K,Kinv)
+    Kinv = math_tools.inverseMatrix(K)
     print("Calculo de respuesta...\n")
     math_tools.productMatrixVector(Kinv,b,T)
 

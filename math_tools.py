@@ -91,7 +91,12 @@ def cofactors(M, cof):
             cof[i][j] = pow(-1, i+j)*determinant(minor)
 
 
-
+def identity_matrix(n):
+    IdM = zeroes(n, n)
+    for i in range(n):
+        IdM[i][i] = 1.0
+ 
+    return IdM
 
 def printVector(v):
     for i in range(len(v)):
@@ -107,17 +112,36 @@ def transpose(M):
  
     return MT
 
-def inverseMatrix(M, Minv):
-    cof = []
-    adj = []
-    det = determinant(M)
-    if(det == 0):
-        print("ERROR")
-        return
-    cofactors(M,cof)
-    adj = transpose(cof)
-    productRealMatrix(1/det,adj,Minv)
+def inverseMatrix(M):
+    n = len(M)
+    AM = copy_matrix(M)
+    I = identity_matrix(n,n)
+    IM = copy_matrix(I)
+    indices = list(range(n))
+    for fd in range(n):
+        fdScaler = 1.0/AM[fd][fd]
+        for j in range(n):
+            AM[fd][j] *= fdScaler
+            IM[fd][j] *= fdScaler
+        
+        for i in indices[0:fd] + indices[fd+1:]:
+            crScaler = AM[i][fd]
+            for p in range(n):
+                AM[i][p] = AM[i][p] - crScaler*AM[fd][p]
+                IM[i][p] = IM[i][p] - crScaler*IM[fd][p]
+    return IM
 
+#def inverseMatrix(M, Minv):
+#    cof = []
+#    adj = []
+#    det = determinant(M)
+#    if(det == 0):
+#        print("ERROR")
+#        return
+#    cofactors(M,cof)
+#    adj = transpose(cof)
+#    productRealMatrix(1/det,adj,Minv)
+#
 #def borrarColumna(matrix, column):
 #    for i in range(len(matrix)):
 #        matrix[i].pop(column)

@@ -6,8 +6,6 @@ import tools
 #Arguments are sent in through sys, and can be called upon with sys.argv
 import sys
 
-tools.writeArguments(sys.argv, "testingArguments")
-
 filename = str()
 filename = sys.argv[1]
 
