@@ -20,7 +20,7 @@ Para correr el post-procesamiento, se debe tomar el .dat generado en GID, correr
 
 ## Gamer Sidequest: I survived
 
-[I survived](https://choosealicense.com/licenses/mit/)
+[I survived](https://drive.google.com/file/d/1fmDT17XCM1wfu0i75sAlYMxfPSEsswjZ/view?usp=sharing)
 
 ### Integrantes
 
