@@ -17,3 +17,9 @@ Este es un proyecto para la simulación del desplazamiento en el eje x de una vi
 ## Gamer Sidequest: I survived
 
 [I survived](https://choosealicense.com/licenses/mit/)
+
+### Integrantes
+
+Miguel Enrique Fernández Azucena 00145518
+Saúl Ernesto Orellana Jimenez 00180718
+Julio Alfredo Machado Olivo 00039718
