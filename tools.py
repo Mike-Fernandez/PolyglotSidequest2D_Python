@@ -72,10 +72,24 @@ def obtenerDatos(file, nlines, n, mode, item_list):
         switch[mode](file, item_list, i)
 #        print("Printing itemList from obtenerDatos "+ str(item_list[i].getX()) + " " + str(item_list[i].getY()) + " " + str(item_list[i].getZ()))
 
-def correctConditions(n, list, indices):
-    for i in range(n):
-        indices[i] = list[i].getNode1()
+def correctConditions(n, list, indices, nNodes, nDirichx, nDirichy, nDirichz):
+    #Python deja las variables delclaradas dentro de un grupo de instrucciones accesibles desde fuera, lo que causa problemas si se quiere
+    #reusar el mismo nombre de variable
+    for r in range(n):
+        indices[r] = list[r].getNode1()
+
+    print("Length of dirichlet list" + str(len(list)))
+
+    for m in range(nDirichy):
+        list[nDirichx + m].setNode1(list[m].getNode1() + nNodes)
     
+    for t in range(nDirichz):
+        list[nDirichx + nDirichy + t].setNode1(list[t].getNode1() + 2*nNodes)
+
+    print("DIRICHLET FROM CORRECT CONDITIONS " + str(n))
+    for f in range(n):
+        print(str(list[f].getNode1())+" "+str(list[f].getValue()))
+
     for i in range(n-1):
         pivot = list[i].getNode1()
         for j in range(i, n):
@@ -135,7 +149,7 @@ def leerMallayCondiciones(m, filename):
     obtenerDatos(file, classes.lines["DOUBLELINE"], nNeu, classes.modes["INT_FLOAT"], m.getNeumann())
 
     file.close()
-    correctConditions(nDirich, m.getDirichlet(), m.getDirichletIndices())
+    correctConditions(nDirich, m.getDirichlet(), m.getDirichletIndices(), m.getSize(classes.sizes["NODES"]), nDirichx,nDirichy, nDirichz)
     print("After correcting the conditions")
 
 def findIndex(v, s, arr):
@@ -173,8 +187,8 @@ def writeResults(m, T, filename):
     file.write("End values\n")
     file.close()
 
-m = classes.mesh()
-leerMallayCondiciones(m, "ProyectoPolyglot")
+#m = classes.mesh()
+#leerMallayCondiciones(m, "ProyectoPolyglot")
 
 #m.node_list[0].setX(9)
 #print(m.node_list[0].getX())
@@ -194,10 +208,10 @@ leerMallayCondiciones(m, "ProyectoPolyglot")
 #dirich_indices = m.getDirichletIndices()
 #print("DIRICHLET INDICES")
 #for i in range(m.getSize(classes.sizes["DIRICHLET"])):
-#    print(str(dirich_indices[i]))
-print("DIRICHLET")
-for i in range(m.getSize(classes.sizes["DIRICHLET"])):
-     print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
+#    print(str(m.getDirichletIndices()[i]))
+#print("DIRICHLET")
+#for i in range(m.getSize(classes.sizes["DIRICHLET"])):
+#    print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
 #m.getDirichlet()[0].setNode1(4)
 #print("DIRICHLET")
 #for i in range(m.getSize(classes.sizes["DIRICHLET"])):
