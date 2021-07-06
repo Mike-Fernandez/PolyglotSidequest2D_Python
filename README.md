@@ -20,6 +20,6 @@ Este es un proyecto para la simulación del desplazamiento en el eje x de una vi
 
 ### Integrantes
 
-Miguel Enrique Fernández Azucena 00145518
-Saúl Ernesto Orellana Jimenez 00180718
+Miguel Enrique Fernández Azucena 00145518  
+Saúl Ernesto Orellana Jimenez 00180718  
 Julio Alfredo Machado Olivo 00039718
