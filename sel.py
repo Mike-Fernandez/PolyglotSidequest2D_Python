@@ -117,7 +117,13 @@ def createLocalc2(x1, x2, x8):
     small = 0.00000000000000001
 #    print("Small al cubo "+str((1/(small))*(small)))
     if(x2-x1 == 0 or (4*x1+4*x2-8*x8) == 0):
-        return (1/(small))*(small)
+        if((4*x1+4*x2-8*x8) == 0):
+            if(x2-x1 == 0):
+                return (1/(small))*(small)
+            else:
+                return (1/(x2-x1))*(small)
+        else:
+            return (1/(small))*(4*x1+4*x2-8*x8)
     else:
         return (1/(x2-x1))*(4*x1+4*x2-8*x8)
 
