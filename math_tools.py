@@ -115,11 +115,15 @@ def transpose(M):
 def inverseMatrix(M):
     n = len(M)
     AM = copy_matrix(M)
-    I = identity_matrix(n,n)
+    I = identity_matrix(n)
     IM = copy_matrix(I)
     indices = list(range(n))
     for fd in range(n):
-        fdScaler = 1.0/AM[fd][fd]
+        if(AM[fd][fd] == 0):
+            fdScaler = 0.00000000000000001
+        else:
+            fdScaler = 1.0/AM[fd][fd]
+
         for j in range(n):
             AM[fd][j] *= fdScaler
             IM[fd][j] *= fdScaler
