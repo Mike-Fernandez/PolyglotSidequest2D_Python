@@ -2,6 +2,10 @@
 
 Este es un proyecto para la simulación del desplazamiento en el eje x de una viga fijada en sus lados.
 
+### Nota:
+
+Para correr el post-procesamiento, se debe tomar el .dat generado en GID, correrlo en el codigo y copiar el .post.res generado a GID.
+
 ## YouTuber Sidequest: Making Of
 
 [Making Of](https://choosealicense.com/licenses/mit/)
