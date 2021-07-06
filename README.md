@@ -1,4 +1,4 @@
-# PolyglotSidequest3D_Python
+# Polyglot Sidequest: Alexa Shmalexa
 
 Este es un proyecto para la simulación del desplazamiento en el eje x de una viga fijada en sus lados.
 
