@@ -8,7 +8,7 @@ Para correr el post-procesamiento, se debe tomar el .dat generado en GID, correr
 
 ## YouTuber Sidequest: Making Of
 
-[Making Of](https://choosealicense.com/licenses/mit/)
+[Making Of](https://youtu.be/ordnlkORiGg)
 
 ## Glass Sidequest: Further Documentation
 
