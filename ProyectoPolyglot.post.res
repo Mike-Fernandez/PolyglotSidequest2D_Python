@@ -1,6 +1,6 @@
 GiD Post Results File 1.0
-Result "Temperature" "Load Case 1" 1 Scalar OnNodes
-ComponentNames "T"
+Result "Fuerza" "Load Case 1" 1 Scalar OnNodes
+ComponentNames "w"
 Values
 1 0.0
 2 -2.7074923482730023e-111
