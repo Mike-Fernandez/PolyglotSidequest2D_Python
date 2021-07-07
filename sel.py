@@ -25,6 +25,7 @@ def showBs(Bs):
         showVector(B)
         print("*********************")
 
+#Metodo para calcular el determinante con la regla de Sarrus
 def calculateLocalD(ind, mesh):
     D = 0.0
     a = 0.0
@@ -59,6 +60,7 @@ def calculateLocalD(ind, mesh):
     D = a*e*i+d*h*c+g*b*f-g*e*c-a*h*f-d*b*i
     return D
 
+#Se calcula el volumen de un elemento
 def calculateLocalVolume(ind, mesh):
     #Se utiliza la siguiente fórmula:
     #      Dados los 4 puntos vértices del tetrahedro A, B, C, D.
@@ -99,10 +101,12 @@ def calculateLocalVolume(ind, mesh):
     #Para el determinante se usa la Regla de Sarrus.
     V = (1.0/6.0) * (a*e*i+d*h*c+g*b*f-g*e*c-a*h*f-d*b*i)
     return V
-
+#Funcion para apoyar la nomenclatura y ahorrarse escribir mucho codigo en los calculos
 def ab_ij(ai,aj,a1,bi,bj,b1):
     return (ai - a1)*(bj - b1) - (aj - a1)*(bi - b1)
 
+#Calculo de variable c1 utilizada en el calculo de los miembros de la matriz miu
+#Esta funcion tiene un check para evitar un divide by zero exception
 def createLocalc1(x1, x2):
     small = 0.00000000000000001
     if(x2-x1 == 0):
@@ -110,12 +114,10 @@ def createLocalc1(x1, x2):
     else:
         return 1/pow(x2-x1,2)
 
+#Calculo de variable c2 utilizada en el calculo de los miembros de la matriz miu
+#Esta funcion tiene un check para evitar un divide by zero exception
 def createLocalc2(x1, x2, x8):
-#    print("x1 " + str(x1))
-#    print("x2 " + str(x2))
-#    print("x8 " + str(x8))
     small = 0.00000000000000001
-#    print("Small al cubo "+str((1/(small))*(small)))
     if(x2-x1 == 0 or (4*x1+4*x2-8*x8) == 0):
         if((4*x1+4*x2-8*x8) == 0):
             if(x2-x1 == 0):
@@ -127,6 +129,7 @@ def createLocalc2(x1, x2, x8):
     else:
         return (1/(x2-x1))*(4*x1+4*x2-8*x8)
 
+#Funciones para calcular los valores en la matriz Miu
 def calculateA(i,mesh): #matriz a por referencia
     element = mesh.getElement(i)
     n1 = mesh.getNode(element.getNode1()-1)
@@ -238,6 +241,7 @@ def calculateK(i, mesh):
 
     return (-4/3)*c1*c2
 
+#Se arma la matriz Miu con todos sus miembros
 def localMiu(i, mesh, miu):
     element = mesh.getElement(i)
     n1 = mesh.getNode(element.getNode1()-1)
@@ -255,7 +259,6 @@ def localMiu(i, mesh, miu):
     J = calculateJ(i,mesh)
     K = calculateK(i,mesh)
 
-#    miu = math_tools.zeroes(10,10)
 
     miu[0][0] = A
     miu[0][1] = E
@@ -313,13 +316,12 @@ def localMiu(i, mesh, miu):
     miu[9][8] = J
     miu[9][9] = C
 
+#La creacion de la local K de cada elemento
 def createLocalK(element, mesh):
     J = calculateJacobiano(element, mesh)
     Ei = mesh.getParameter(classes.parameters["EI"])
     miu = math_tools.zeroes(10,10)
     localMiu(element,mesh,miu)
-#    print("Miu")
-#    showMatrix(miu)
 
     K = math_tools.zeroes(30,30)
     temp = math_tools.zeroes(30,30)
@@ -340,10 +342,10 @@ def createLocalK(element, mesh):
     math_tools.productRealMatrix(Ei*J,temp, K)
     return K
 
+#La creacion de la local B
 def createLocalB(element, mesh):
     B = []
     math_tools.vectorZeroes(B,30)
-#    B = math_tools.zeroes(30,1)
     fx = mesh.getParameter(classes.parameters["FX"])
     fy = mesh.getParameter(classes.parameters["FY"])
     fz = mesh.getParameter(classes.parameters["FZ"])

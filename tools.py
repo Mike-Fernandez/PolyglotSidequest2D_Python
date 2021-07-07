@@ -2,6 +2,7 @@ from enum import Enum
 from math_tools import vectorZeroes, zeroes
 import classes
 
+#Caso para leer una condicion
 def INT_FLOAT(file, item_list, i):
     e0 = 0
     r0 = 0.0
@@ -13,6 +14,7 @@ def INT_FLOAT(file, item_list, i):
         classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], 
         classes.indicators["NOTHING"], classes.indicators["NOTHING"], r0)
 
+#Caso para leer un nodo
 def INT_FLOAT_FLOAT_FLOAT(file, item_list: classes.item, i):
     e = 0
     r = 0.0 
@@ -28,6 +30,7 @@ def INT_FLOAT_FLOAT_FLOAT(file, item_list: classes.item, i):
         classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], 
         classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"])
 
+#Caso para leer un elemento
 def INT10(file, item_list, i):
     e1 = 0
     e2 = 0
@@ -55,41 +58,39 @@ def INT10(file, item_list, i):
     item_list[i].setValues(e1, classes.indicators["NOTHING"], classes.indicators["NOTHING"], classes.indicators["NOTHING"], 
         e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, classes.indicators["NOTHING"])
 
+#La sentencia de switch no existe en python, pero se puede hacer algo similar con el uso de diccionarios
 switch = {
     classes.modes["INT_FLOAT"]: INT_FLOAT,
     classes.modes["INT_FLOAT_FLOAT_FLOAT"]: INT_FLOAT_FLOAT_FLOAT,
     classes.modes["INT10"]: INT10
 }
 
-
+#Esta funcion hace uso del switch para leer datos de la malla
 def obtenerDatos(file, nlines, n, mode, item_list):
     line = ""
-#    file = open("3dtest.dat", "r")
     line = file.readline()
     if(nlines == classes.lines["DOUBLELINE"]):
         line = file.readline()
     for i in range(n):
         switch[mode](file, item_list, i)
-#        print("Printing itemList from obtenerDatos "+ str(item_list[i].getX()) + " " + str(item_list[i].getY()) + " " + str(item_list[i].getZ()))
 
 def correctConditions(n, list, indices, nNodes, nDirichx, nDirichy, nDirichz):
     #Python deja las variables delclaradas dentro de un grupo de instrucciones accesibles desde fuera, lo que causa problemas si se quiere
     #reusar el mismo nombre de variable
+
+    #Aqui se copian los id de cada dirichlet para guardarlos y darselos al gid
+    #Para nuestra logica vamos a ocupar las posiciones procesadas de cada dirichlet
     for r in range(n):
         indices[r] = list[r].getNode1()
-
-    print("Length of dirichlet list" + str(len(list)))
-
+    
+    #Estos for corrigen la numeracion de los dirichlet de y 'y' de 'z' ya que los imprimimos 
     for m in range(nDirichy):
         list[nDirichx + m].setNode1(list[m].getNode1() + nNodes)
     
     for t in range(nDirichz):
         list[nDirichx + nDirichy + t].setNode1(list[t].getNode1() + 2*nNodes)
 
-    print("DIRICHLET FROM CORRECT CONDITIONS " + str(n))
-    for f in range(n):
-        print(str(list[f].getNode1())+" "+str(list[f].getValue()))
-
+    #Este for corrige los indices de forma en la lista de dirichlet
     for i in range(n-1):
         pivot = list[i].getNode1()
         for j in range(i, n):
@@ -97,17 +98,20 @@ def correctConditions(n, list, indices, nNodes, nDirichx, nDirichy, nDirichz):
             if(pos > pivot):
                 list[j].setNode1(pos-1)
 
+#Esta funcion le agrega una extension al file para su uso en el codigo
 def addExtension(filename, extension):
     tupla = (filename, extension)
     newFileName = "".join(tupla)
     return newFileName
 
+#Funcion super importante que llena la malla de los datos en el file .dat
 def leerMallayCondiciones(m, filename):
     inputFileName = ""
     nNodes = 0  
     nEltos=0 
     nDirich=0 
     nNeu = 0
+    #Lectura de todos los valores preexistentes como mi Ei, y mi vector f
     inputFileName = addExtension(filename, ".dat")
     file = open(inputFileName, "r")
     line  = [float(x) for x in file.readline().split()]
@@ -126,38 +130,34 @@ def leerMallayCondiciones(m, filename):
 
     file.readline()
 
+    #Se setean los valores leidos en el objeto mesh
     m.setParameters(Ei, f_x, f_y, f_z)
     m.setSizes(nNodes, nEltos, nDirich, nNeu)
     m.createData()
 
+    #Se leen primero los nodos de la mesh y se guardan ya que la malla se pasa por referencia
     obtenerDatos(file, classes.lines["SINGLELINE"], nNodes, classes.modes["INT_FLOAT_FLOAT_FLOAT"], m.getNodes())
     file.readline()
-#    item_list = m.node_list
-#    for i in range(10):
-#        print("Printing itemList from leerMalla "+ str(item_list[i].getX()) + " " + str(item_list[i].getY()) + " " + str(item_list[i].getZ()))
+    #Se leen los elementos de la mesh y se guardan en ella ya que se pasan por referencia
     obtenerDatos(file, classes.lines["DOUBLELINE"], nEltos, classes.modes["INT10"], m.getElements())
     file.readline()
+    #Se leen los dirichlet de la malla y se guardan estos en el objeto malla
     obtenerDatos(file, classes.lines["DOUBLELINE"], nDirichx+nDirichy+nDirichz, classes.modes["INT_FLOAT"], m.getDirichlet())
-#    temp = file.readline()
-#    print("line after reading dirichletX"+temp)
-#    obtenerDatos(file, classes.lines["DOUBLELINE"], nDirichy, classes.modes["INT_FLOAT"], m.getDirichlet())
-#    temp = file.readline()
-#    print("line after reading dirichletY"+temp)
-#    obtenerDatos(file, classes.lines["DOUBLELINE"], nDirichz, classes.modes["INT_FLOAT"], m.getDirichlet())
-    temp = file.readline()
-    print("line after reading dirichletZ"+temp)
+    #Se leen los neumann de la malla
     obtenerDatos(file, classes.lines["DOUBLELINE"], nNeu, classes.modes["INT_FLOAT"], m.getNeumann())
 
     file.close()
+    #Se llama a la funcion para corregir los id de los dirichlet y guardar otros datos que necesitaremos despues
     correctConditions(nDirich, m.getDirichlet(), m.getDirichletIndices(), m.getSize(classes.sizes["NODES"]), nDirichx,nDirichy, nDirichz)
-    print("After correcting the conditions")
 
+#Encontrar un valor en un vector
 def findIndex(v, s, arr):
     for i in range(s):
         if(arr[i] == v):
             return True
     return False
 
+#Funcion para escribir en el file .post.res los resultados calculados por el programa
 def writeResults(m, T, filename):
     outputFilename = ""
     dirichIndices = m.getDirichletIndices()
@@ -168,7 +168,7 @@ def writeResults(m, T, filename):
     file = open(outputFilename, "w")
 
     file.write("GiD Post Results File 1.0\n")
-    file.write("Result \"Temperature\" \"Load Case 1\" 1 Scalar OnNodes\nComponentNames \"T\"\nValues\n")
+    file.write("Result \"Fuerza\" \"Load Case 1\" 1 Scalar OnNodes\nComponentNames \"w\"\nValues\n")
 
     Tpos = 0
     Dpos = 0
@@ -186,38 +186,3 @@ def writeResults(m, T, filename):
     
     file.write("End values\n")
     file.close()
-
-#m = classes.mesh()
-#leerMallayCondiciones(m, "ProyectoPolyglot")
-
-#m.node_list[0].setX(9)
-#print(m.node_list[0].getX())
-#print(m.getNode(0).getX())
-
-#print("NODES")
-#for i in range(m.getSize(classes.sizes["NODES"])):
-#    print(str(m.getNodes()[i].getX())+" "+str(m.getNodes()[i].getY())+" "+str(m.getNodes()[i].getZ()))
-#print("ELEMENTS")
-#for i in range(m.getSize(classes.sizes["ELEMENTS"])):
-#    print(str(m.getElements()[i].getNode1())+" "+str(m.getElements()[i].getNode2())+" "+str(m.getElements()[i].getNode3())+" "+str(m.getElements()[i].getNode4())
-#        +" "+str(m.getElements()[i].getNode5()) +" "+str(m.getElements()[i].getNode6()) +" "+str(m.getElements()[i].getNode7()) +" "+str(m.getElements()[i].getNode8())
-#        +" "+str(m.getElements()[i].getNode9()) +" "+str(m.getElements()[i].getNode10()))
-#print("NEUMANN")
-#for i in range(m.getSize(classes.sizes["NEUMANN"])):
-#    print(str(m.getNeumann()[i].getNode1())+" "+str(m.getNeumann()[i].getValue()))
-#dirich_indices = m.getDirichletIndices()
-#print("DIRICHLET INDICES")
-#for i in range(m.getSize(classes.sizes["DIRICHLET"])):
-#    print(str(m.getDirichletIndices()[i]))
-#print("DIRICHLET")
-#for i in range(m.getSize(classes.sizes["DIRICHLET"])):
-#    print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
-#m.getDirichlet()[0].setNode1(4)
-#print("DIRICHLET")
-#for i in range(m.getSize(classes.sizes["DIRICHLET"])):
-#    print(str(m.getDirichlet()[i].getNode1())+" "+str(m.getDirichlet()[i].getValue()))
-
-#obtenerDatos("3dtest.dat", 0, 0, 0, 0)
-#T = []
-#vectorZeroes(T,30)
-#writeResults(m,T,"ProyectoPolyglot")

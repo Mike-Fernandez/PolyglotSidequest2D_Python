@@ -1,3 +1,4 @@
+#Podemos usar los diccionaries tambien para emular los enum
 indicators = {
     "NOTHING": 0
 }
@@ -26,7 +27,10 @@ sizes ={
     "NEUMANN" : 3
 }
 
+#Clase item que es padre a las otras clases como node, condition y element
 class item:
+    #Para python referenciar al this se hace por medio del self que se ubica como que es un argument, 
+    #pero no es necesario pasarlo por argument en la llamda al objeto o metodo
     def __init__(self):
 
         self.id = None
@@ -139,7 +143,6 @@ class item:
         None
 
 class node(item):
-    #a = id, bcd = valuesXYZ, efghijklmn = nodesOfElement, o = valueOfCondition
     def setValues(self,a, b, c, d, e, f, g, h, i, j, k, l, m, n, o):
         self.id = a
         self.x = b
@@ -165,6 +168,7 @@ class condition(item):
         self.node1 = e
         self.value = o
 
+#El objeto de malla con todos sus detalles
 class mesh:
     def __init__(self):
         self.parameters = [None for n in range(4)]

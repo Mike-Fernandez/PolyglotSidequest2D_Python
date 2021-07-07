@@ -1,10 +1,10 @@
 #import sel
 
-def showMatrix(m):
-    for row in m:
-        for cell in row:
-            print(cell, end="  ")
-        print()
+#def showMatrix(m):
+#    for row in m:
+#        for cell in row:
+#            print(cell, end="  ")
+#        print()
 
 def zeroes2(m, rows, columns):
     for i in range(rows):
@@ -26,10 +26,12 @@ def zeroes(rows, columns):
         m.append(row)
     return m
 
+#Fills a vector of size n with 0
 def vectorZeroes(v, n):
     for i in range(n):
         v.append(0)
 
+#Returns a copy of the matrix provided
 def copy_matrix(M):
     rows = len(M)
     cols = len(M[0])
@@ -40,12 +42,14 @@ def copy_matrix(M):
 
     return MC
 
+#Metodo para calcular un miembro de una matriz
 def calculateMember(i, j, r, A, B):
     member = 0
     for k in range(r):
         member += A[i][k]*B[k][j]
     return member
 
+#Returns the result of multiplying two matrixes
 def productMatrixMatrix(A, B, n, r, m):
     R = zeroes(n,m)
 
@@ -54,6 +58,7 @@ def productMatrixMatrix(A, B, n, r, m):
             R[i][j] = calculateMember(i,j,r,A,B)
     return R
 
+#Calculates the result of multilying a mtrix and a vector
 def productMatrixVector(A,v,R):
     for f in range(len(A)):
         cell = 0.0
@@ -61,14 +66,17 @@ def productMatrixVector(A,v,R):
             cell+=A[f][c]*v[c]
         R[f] =  R[f] + cell
 
+#Multiply the values of a matrix with a scalar values that's given
 def productRealMatrix(real, M, R):
     for i in range(len(M)):
         for j in range(len(M[0])):
             R[i][j] = real*M[i][j]
 
+#Calcula un menor de la matriz
 def getMatrixMinor(m,rows,columns):
     return [row[:columns] + row[columns+1:] for row in (m[:rows]+m[rows+1:])]
 
+#Calcula el determinante de una matriz
 def determinant(M):
     if(len(M) == 1):
         return M[0][0]
@@ -81,6 +89,7 @@ def determinant(M):
             det += pow(-1,i)*M[0][i]*determinant(minor)
         return det;
 
+#Calcula los cofactores de una matriz
 def cofactors(M, cof):
     n = len(M)
     zeroes2(cof,n,n)
@@ -91,6 +100,7 @@ def cofactors(M, cof):
             cof[i][j] = pow(-1, i+j)*determinant(minor)
 
 
+#Returns the identity matrix of size n
 def identity_matrix(n):
     IdM = zeroes(n, n)
     for i in range(n):
@@ -102,6 +112,7 @@ def printVector(v):
     for i in range(len(v)):
         print(v[i])
 
+#Transpone una matriz
 def transpose(M):
     rows = len(M)
     cols = len(M[0])
@@ -112,6 +123,8 @@ def transpose(M):
  
     return MT
 
+#Encontramos este metodo de calcular la inversa de una matriz en el internet
+#Este metodo tarda menos tiempo que el metodo de cofactores y adjunta, asi que hemos usado esta version de la funcion
 def inverseMatrix(M):
     n = len(M)
     AM = copy_matrix(M)
@@ -135,6 +148,7 @@ def inverseMatrix(M):
                 IM[i][p] = IM[i][p] - crScaler*IM[fd][p]
     return IM
 
+#Aqui se encuentra el metodo de cofactores y adjunta, sabemos que funciona solo que se tarda muuuuuuuucho en calcular
 #def inverseMatrix(M, Minv):
 #    cof = []
 #    adj = []
@@ -145,27 +159,3 @@ def inverseMatrix(M):
 #    cofactors(M,cof)
 #    adj = transpose(cof)
 #    productRealMatrix(1/det,adj,Minv)
-#
-#def borrarColumna(matrix, column):
-#    for i in range(len(matrix)):
-#        matrix[i].pop(column)
-
-#matrix = zeroes(3, 3)
-#matrix[2][1] = 1
-#matrix[1][1] = 5
-#matrix[0][2] = 2
-#matrix[2][0] = 7
-#showMatrix(matrix)
-#print("hello from math_tools")
-#for i in range(len(matrix)):
-#    matrix[i].pop(0)
-#showMatrix(matrix)
-#det = determinant(matrix)
-#vectorZeroes(resp, 3)
-#cofactors(matrix, cof)
-#print(len(multiplied))
-#productMatrixVector(matrix, multiplied, resp)
-#Minor = getMatrixMinor(matrix,1,0)
-#sel.showMatrix(Minv)
-#printVector(resp)
-#print(det)
