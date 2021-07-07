@@ -1,6 +1,10 @@
-# PolyglotSidequest3D_Python
+# Polyglot Sidequest: Alexa Shmalexa
 
 Este es un proyecto para la simulación del desplazamiento en el eje x de una viga fijada en sus lados.
+
+### Nota:
+
+Para correr el post-procesamiento, se debe tomar el .dat generado en GID, correrlo en el codigo y copiar el .post.res generado a GID.
 
 ## YouTuber Sidequest: Making Of
 
@@ -16,7 +20,7 @@ Este es un proyecto para la simulación del desplazamiento en el eje x de una vi
 
 ## Gamer Sidequest: I survived
 
-[I survived](https://choosealicense.com/licenses/mit/)
+[I survived](https://drive.google.com/file/d/1fmDT17XCM1wfu0i75sAlYMxfPSEsswjZ/view?usp=sharing)
 
 ### Integrantes
 
